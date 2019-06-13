@@ -73,11 +73,12 @@ var generateMockData = function (containerWidth) {
  */
 var createPinElement = function (pinTemplate, ad) {
   var pinElement = pinTemplate.cloneNode(true);
+  var pinImageElement = pinElement.querySelector('img');
 
   pinElement.style.left = (ad.location.x - MAP_PIN_WIDTH / 2) + 'px';
   pinElement.style.top = (ad.location.y - MAP_PIN_HEIGHT) + 'px';
-  pinElement.querySelector('img').src = ad.author.avatar;
-  pinElement.querySelector('img').alt = ad.offer.type;
+  pinImageElement.src = ad.author.avatar;
+  pinImageElement.alt = ad.offer.type;
 
   return pinElement;
 };
