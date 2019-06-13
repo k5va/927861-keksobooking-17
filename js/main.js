@@ -10,6 +10,8 @@ var OFFER_TYPES = ['palace', 'flat', 'house', 'bungalo'];
 var MAP_PINS_ELEMENT = document.querySelector('.map__pins');
 var MAP_ELEMENT = document.querySelector('.map');
 var PIN_TEMPLATE_ELEMENT = document.querySelector('#pin').content.querySelector('.map__pin');
+var MAP_PIN_WIDTH = 50;
+var MAP_PIN_HEIGHT = 70;
 
 /**
  * Returns random element of an array
@@ -71,8 +73,8 @@ var generateMockData = function (containerWidth) {
 var createPinElement = function (pinTemplate, ad) {
   var pinElement = pinTemplate.cloneNode(true);
 
-  pinElement.style.left = ad.location.x + 'px';
-  pinElement.style.top = ad.location.y + 'px';
+  pinElement.style.left = (ad.location.x - MAP_PIN_WIDTH / 2) + 'px';
+  pinElement.style.top = (ad.location.y - MAP_PIN_HEIGHT) + 'px';
   pinElement.querySelector('img').src = ad.author.avatar;
   pinElement.querySelector('img').alt = ad.offer.type;
 
