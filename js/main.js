@@ -5,10 +5,7 @@ var AVATAR_IMAGE_SOURCE = 'img/avatars/user{{xx}}.png';
 var LOCATION_Y_MIN = 130;
 var LOCATION_Y_MAX = 630;
 var USERS_SORT_THRESHOLD = 0.5;
-var USER_NUMBERS = ['01', '02', '03', '04', '05', '06', '07', '08']
-  .sort(function () {
-    return Math.random() > USERS_SORT_THRESHOLD ? 1 : -1;
-  });
+var USER_NUMBERS = ['01', '02', '03', '04', '05', '06', '07', '08'];
 var OFFER_TYPES = ['palace', 'flat', 'house', 'bungalo'];
 var MAP_PINS_ELEMENT = document.querySelector('.map__pins');
 var MAP_ELEMENT = document.querySelector('.map');
@@ -39,6 +36,10 @@ var generateRandomNumberFromRange = function (min, max) {
  * @return {Array} - Ads objects array
  */
 var generateMockData = function (containerWidth) {
+  //sort users
+  USER_NUMBERS = USER_NUMBERS.sort(function () {
+    return Math.random() > USERS_SORT_THRESHOLD ? 1 : -1;
+  });
   // initialize ads data array
   var ads = [];
   // populate ads with data
