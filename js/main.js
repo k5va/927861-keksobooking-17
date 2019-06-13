@@ -19,3 +19,41 @@ var OFFER_TYPES = ['palace', 'flat', 'house', 'bungalo'];
 var getRandomElementFromArray = function (elements) {
   return elements[Math.floor(Math.random() * elements.length)];
 };
+
+/**
+ * Returns random bumber form the given range
+ * @param {number} min - minimum of the range
+ * @param {number} max - number of the range
+ * @return {number} - random element from the given range
+ */
+var generateRandomNumberFromRange = function (min, max) {
+  return min + Math.floor(Math.random() * (max - min));
+};
+
+/**
+ * Generates Ads mock data
+ * @return {Array} - Ads objects array
+ */
+var generateMockData = function () {
+  // initialize ads data array
+  var ads = [];
+  // populate ads with data
+  for (var i = 0; i < ADS_NUMBER; i++) {
+    ads.push({
+      author: {
+        avatar: AVATAR_IMAGE_SOURCE.replace('{{xx}}', USER_NUMBERS[i])
+      },
+      offer: {
+        type: getRandomElementFromArray(OFFER_TYPES)
+      },
+      location: {
+        x: generateRandomNumberFromRange(0, 1000), //TODO: change to block size
+        y: generateRandomNumberFromRange(LOCATION_Y_MIN, LOCATION_Y_MAX)
+      }
+    });
+  }
+
+  return ads;
+};
+
+
