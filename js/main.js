@@ -10,6 +10,9 @@ var USER_NUMBERS = ['01', '02', '03', '04', '05', '06', '07', '08']
     return Math.random() > USERS_SORT_THRESHOLD ? 1 : -1;
   });
 var OFFER_TYPES = ['palace', 'flat', 'house', 'bungalo'];
+var MAP_PINS_ELEMENT = document.querySelector('.map__pins');
+var MAP_ELEMENT = document.querySelector('.map');
+var PIN_TEMPLATE_ELEMENT = document.querySelector('#pin').content.querySelector('.map__pin');
 
 /**
  * Returns random element of an array
@@ -23,7 +26,7 @@ var getRandomElementFromArray = function (elements) {
 /**
  * Returns random bumber form the given range
  * @param {number} min - minimum of the range
- * @param {number} max - number of the range
+ * @param {number} max - maximum of the range
  * @return {number} - random element from the given range
  */
 var generateRandomNumberFromRange = function (min, max) {
@@ -32,10 +35,12 @@ var generateRandomNumberFromRange = function (min, max) {
 
 /**
  * Generates Ads mock data
+ * @param {number} containerWidth - width of the containing block to set location.x
  * @return {Array} - Ads objects array
  */
-var generateMockData = function () {
+var generateMockData = function (containerWidth) {
   // initialize ads data array
+  console.log(containerWidth);
   var ads = [];
   // populate ads with data
   for (var i = 0; i < ADS_NUMBER; i++) {
@@ -47,7 +52,7 @@ var generateMockData = function () {
         type: getRandomElementFromArray(OFFER_TYPES)
       },
       location: {
-        x: generateRandomNumberFromRange(0, 1000), //TODO: change to block size
+        x: generateRandomNumberFromRange(0, containerWidth),
         y: generateRandomNumberFromRange(LOCATION_Y_MIN, LOCATION_Y_MAX)
       }
     });
@@ -80,20 +85,16 @@ var createPinElement = function (pinTemplate, ad) {
  * @param {Array} ads - ads data array
  */
 var renderMapPins = function (ads) {
-  var pinTemplate = document.querySelector('#pin')
-    .content
-    .querySelector('.map__pin');
-  var mapPins = document.querySelector('.map__pins');
   var fragment = document.createDocumentFragment();
 
   ads.forEach(function (ad, i) {
-    fragment.appendChild(createPinElement(pinTemplate, ad));
+    fragment.appendChild(createPinElement(PIN_TEMPLATE_ELEMENT, ad));
   });
 
-  mapPins.appendChild(fragment);
+  MAP_PINS_ELEMENT.appendChild(fragment);
 };
 
-renderMapPins(generateMockData());
-document.querySelector('.map').classList.remove('map--faded');
+renderMapPins(generateMockData(MAP_PINS_ELEMENT.offsetWidth));
+MAP_ELEMENT.classList.remove('map--faded');
 
 
