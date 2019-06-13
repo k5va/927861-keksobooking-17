@@ -74,3 +74,26 @@ var createPinElement = function (pinTemplate, ad) {
   return pinElement;
 };
 
+
+/**
+ * Creates Map pins DOM elements and renders them to the DOM
+ * @param {Array} ads - ads data array
+ */
+var renderMapPins = function (ads) {
+  var pinTemplate = document.querySelector('#pin')
+    .content
+    .querySelector('.map__pin');
+  var mapPins = document.querySelector('.map__pins');
+  var fragment = document.createDocumentFragment();
+
+  ads.forEach(function (ad, i) {
+    fragment.appendChild(createPinElement(pinTemplate, ad));
+  });
+
+  mapPins.appendChild(fragment);
+};
+
+renderMapPins(generateMockData());
+document.querySelector('.map').classList.remove('map--faded');
+
+
