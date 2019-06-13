@@ -39,7 +39,7 @@ var generateRandomNumberFromRange = function (min, max) {
  * @return {Array} - Ads objects array
  */
 var generateMockData = function (containerWidth) {
-  //make randomly sorted copy of USER_NUMBERS
+  // make randomly sorted copy of USER_NUMBERS
   var userRadomNumbers = USER_NUMBERS.slice(0).sort(function () {
     return Math.random() > USERS_SORT_THRESHOLD ? 1 : -1;
   });
@@ -90,7 +90,7 @@ var createPinElement = function (pinTemplate, ad) {
 var renderMapPins = function (ads) {
   var fragment = document.createDocumentFragment();
 
-  ads.forEach(function (ad, i) {
+  ads.forEach(function (ad) {
     fragment.appendChild(createPinElement(PIN_TEMPLATE_ELEMENT, ad));
   });
 
