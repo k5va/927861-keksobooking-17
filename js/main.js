@@ -40,7 +40,6 @@ var generateRandomNumberFromRange = function (min, max) {
  */
 var generateMockData = function (containerWidth) {
   // initialize ads data array
-  console.log(containerWidth);
   var ads = [];
   // populate ads with data
   for (var i = 0; i < ADS_NUMBER; i++) {
