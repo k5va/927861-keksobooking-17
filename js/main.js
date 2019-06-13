@@ -82,7 +82,6 @@ var createPinElement = function (pinTemplate, ad) {
   return pinElement;
 };
 
-
 /**
  * Creates Map pins DOM elements and renders them to the DOM
  * @param {Array} ads - ads data array
