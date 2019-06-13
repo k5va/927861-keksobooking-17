@@ -39,8 +39,8 @@ var generateRandomNumberFromRange = function (min, max) {
  * @return {Array} - Ads objects array
  */
 var generateMockData = function (containerWidth) {
-  //sort users
-  USER_NUMBERS = USER_NUMBERS.sort(function () {
+  //make randomly sorted copy of USER_NUMBERS
+  var userRadomNumbers = USER_NUMBERS.slice(0).sort(function () {
     return Math.random() > USERS_SORT_THRESHOLD ? 1 : -1;
   });
   // initialize ads data array
@@ -49,7 +49,7 @@ var generateMockData = function (containerWidth) {
   for (var i = 0; i < ADS_NUMBER; i++) {
     ads.push({
       author: {
-        avatar: AVATAR_IMAGE_SOURCE.replace('{{xx}}', USER_NUMBERS[i])
+        avatar: AVATAR_IMAGE_SOURCE.replace('{{xx}}', userRadomNumbers[i])
       },
       offer: {
         type: getRandomElementFromArray(OFFER_TYPES)
