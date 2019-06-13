@@ -2,6 +2,7 @@
 
 var ADS_NUMBER = 8;
 var AVATAR_IMAGE_SOURCE = 'img/avatars/user{{xx}}.png';
+var LOCATION_X_MIN = 0;
 var LOCATION_Y_MIN = 130;
 var LOCATION_Y_MAX = 630;
 var USERS_SORT_THRESHOLD = 0.5;
@@ -23,10 +24,10 @@ var getRandomElementFromArray = function (elements) {
 };
 
 /**
- * Returns random bumber form the given range
+ * Returns random number form the given range
  * @param {number} min - minimum of the range
  * @param {number} max - maximum of the range
- * @return {number} - random element from the given range
+ * @return {number} - random number from the given range
  */
 var generateRandomNumberFromRange = function (min, max) {
   return min + Math.floor(Math.random() * (max - min));
@@ -54,7 +55,7 @@ var generateMockData = function (containerWidth) {
         type: getRandomElementFromArray(OFFER_TYPES)
       },
       location: {
-        x: generateRandomNumberFromRange(0, containerWidth),
+        x: generateRandomNumberFromRange(LOCATION_X_MIN, containerWidth),
         y: generateRandomNumberFromRange(LOCATION_Y_MIN, LOCATION_Y_MAX)
       }
     });
