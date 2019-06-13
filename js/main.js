@@ -56,4 +56,21 @@ var generateMockData = function () {
   return ads;
 };
 
+/**
+ * Creates map pin DOM Element from given template and ad object
+ * @param {Node} pinTemplate - template for creating map pin element
+ * @param {object} ad - ad object containing data
+ *
+ * @return {Node} pin Element - created pin DOM element
+ */
+var createPinElement = function (pinTemplate, ad) {
+  var pinElement = pinTemplate.cloneNode(true);
+
+  pinElement.style.left = ad.location.x + 'px';
+  pinElement.style.top = ad.location.y + 'px';
+  pinElement.querySelector('img').src = ad.author.avatar;
+  pinElement.querySelector('img').alt = ad.offer.type;
+
+  return pinElement;
+};
 
