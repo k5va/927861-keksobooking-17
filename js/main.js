@@ -159,6 +159,16 @@ var deactivateBookingPage = function () {
   disableMapFiltersForm();
 };
 
+/**
+ * Sets Add notice form's address field to initial value (center of map__pin--main)
+ */
+var initializeNoticeAddress = function () {
+  ADD_NOTICE_FORM.querySelector('input[name=address]').value =
+    Math.floor((MAP_PIN_MAIN_ELEMENT.offsetLeft + MAP_PIN_MAIN_ELEMENT.offsetWidth / 2)) + ', '
+    + Math.floor((MAP_PIN_MAIN_ELEMENT.offsetTop + MAP_PIN_MAIN_ELEMENT.offsetHeight / 2));
+};
+
+initializeNoticeAddress();
 deactivateBookingPage();
 MAP_PIN_MAIN_ELEMENT.addEventListener('click', function () {
   activateBookingPage();
