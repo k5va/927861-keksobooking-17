@@ -13,6 +13,11 @@ var MAP_ELEMENT = document.querySelector('.map');
 var PIN_TEMPLATE_ELEMENT = document.querySelector('#pin').content.querySelector('.map__pin');
 var MAP_PIN_WIDTH = 50;
 var MAP_PIN_HEIGHT = 70;
+var MAP_PIN_MAIN_ELEMENT = MAP_PINS_ELEMENT.querySelector('.map__pin--main');
+var ADD_NOTICE_FORM = document.querySelector('.ad-form');
+var ADD_NOTICE_FORM_FIELDS = ADD_NOTICE_FORM.querySelectorAll('fieldset');
+var MAP_FILTERS_FORM = MAP_ELEMENT.querySelector('.map__filters');
+var MAP_FILTERS_FORM_FIELDS = MAP_FILTERS_FORM.querySelectorAll('fieldset, select');
 
 /**
  * Returns random element of an array
@@ -97,7 +102,75 @@ var renderMapPins = function (ads) {
   MAP_PINS_ELEMENT.appendChild(fragment);
 };
 
-renderMapPins(generateMockData(MAP_PINS_ELEMENT.offsetWidth));
-MAP_ELEMENT.classList.remove('map--faded');
+/**
+ * Disables Add notice form and fields
+ */
+var disableAddNoticeForm = function () {
+  ADD_NOTICE_FORM.classList.add('ad-form--disabled');
+  ADD_NOTICE_FORM_FIELDS.forEach(function (element) {
+    element.disabled = true;
+  });
+};
 
+/**
+ * Enable Add notice form and fields
+ */
+var enableAddNoticeForm = function () {
+  ADD_NOTICE_FORM.classList.remove('ad-form--disabled');
+  ADD_NOTICE_FORM_FIELDS.forEach(function (element) {
+    element.disabled = false;
+  });
+};
+
+/**
+ * Disables Map filters form
+ */
+var disableMapFiltersForm = function () {
+  MAP_FILTERS_FORM_FIELDS.forEach(function (element) {
+    element.disabled = true;
+  });
+};
+
+/**
+ * Enables Map filters form
+ */
+var enableMapFiltersForm = function () {
+  MAP_FILTERS_FORM_FIELDS.forEach(function (element) {
+    element.disabled = false;
+  });
+};
+
+/**
+ * Activates booking page
+ */
+var activateBookingPage = function () {
+  renderMapPins(generateMockData(MAP_PINS_ELEMENT.offsetWidth));
+  MAP_ELEMENT.classList.remove('map--faded');
+  enableAddNoticeForm();
+  enableMapFiltersForm();
+};
+
+/**
+ * Deactivates booking page
+ */
+var deactivateBookingPage = function () {
+  MAP_ELEMENT.classList.add('map--faded');
+  disableAddNoticeForm();
+  disableMapFiltersForm();
+};
+
+/**
+ * Sets Add notice form's address field to initial value (center of map__pin--main)
+ */
+var initializeNoticeAddress = function () {
+  ADD_NOTICE_FORM.querySelector('input[name=address]').value =
+    Math.floor((MAP_PIN_MAIN_ELEMENT.offsetLeft + MAP_PIN_MAIN_ELEMENT.offsetWidth / 2)) + ', '
+    + Math.floor((MAP_PIN_MAIN_ELEMENT.offsetTop + MAP_PIN_MAIN_ELEMENT.offsetHeight / 2));
+};
+
+initializeNoticeAddress();
+deactivateBookingPage();
+MAP_PIN_MAIN_ELEMENT.addEventListener('click', function () {
+  activateBookingPage();
+});
 
