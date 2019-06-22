@@ -2,11 +2,13 @@
 
 var ADS_NUMBER = 8;
 var AVATAR_IMAGE_SOURCE = 'img/avatars/user{{xx}}.png';
-var LOCATION_X_MIN = 0;
-var LOCATION_Y_MIN = 130;
-var LOCATION_Y_MAX = 630;
+var PinLocation = {
+  X_MIN: 0,
+  X_MAX: 1200,
+  Y_MIN: 130,
+  Y_MAX: 630
+};
 var USERS_SORT_THRESHOLD = 0.5;
-var USER_NUMBERS = ['01', '02', '03', '04', '05', '06', '07', '08'];
 var OFFER_TYPES = ['palace', 'flat', 'house', 'bungalo'];
 var MAP_PINS_ELEMENT = document.querySelector('.map__pins');
 var MAP_ELEMENT = document.querySelector('.map');
@@ -40,28 +42,24 @@ var generateRandomNumberFromRange = function (min, max) {
 
 /**
  * Generates Ads mock data
- * @param {number} containerWidth - width of the containing block to set location.x
+ * @param {number} dataNumber - Number of mock data to generate
  * @return {Array} - Ads objects array
  */
-var generateMockData = function (containerWidth) {
-  // make randomly sorted copy of USER_NUMBERS
-  var userRadomNumbers = USER_NUMBERS.slice(0).sort(function () {
-    return Math.random() > USERS_SORT_THRESHOLD ? 1 : -1;
-  });
+var generateMockData = function (dataNumber) {
   // initialize ads data array
   var ads = [];
   // populate ads with data
-  for (var i = 0; i < ADS_NUMBER; i++) {
+  for (var i = 0; i < dataNumber; i++) {
     ads.push({
       author: {
-        avatar: AVATAR_IMAGE_SOURCE.replace('{{xx}}', userRadomNumbers[i])
+        avatar: AVATAR_IMAGE_SOURCE.replace('{{xx}}', (i + 1) < 10 ? '0' + (i + 1) : (i + 1))
       },
       offer: {
         type: getRandomElementFromArray(OFFER_TYPES)
       },
       location: {
-        x: generateRandomNumberFromRange(LOCATION_X_MIN, containerWidth),
-        y: generateRandomNumberFromRange(LOCATION_Y_MIN, LOCATION_Y_MAX)
+        x: generateRandomNumberFromRange(PinLocation.X_MIN, PinLocation.X_MAX),
+        y: generateRandomNumberFromRange(PinLocation.Y_MIN, PinLocation.Y_MAX)
       }
     });
   }
@@ -144,7 +142,7 @@ var enableMapFiltersForm = function () {
  * Activates booking page
  */
 var activateBookingPage = function () {
-  renderMapPins(generateMockData(MAP_PINS_ELEMENT.offsetWidth));
+  renderMapPins(generateMockData(ADS_NUMBER));
   MAP_ELEMENT.classList.remove('map--faded');
   enableAddNoticeForm();
   enableMapFiltersForm();
