@@ -177,6 +177,8 @@ MAP_PIN_MAIN_ELEMENT.addEventListener('click', function () {
 });
 
 var addNoticePriceField = ADD_NOTICE_FORM.querySelector('#price');
+var addNoticeTimeInField = ADD_NOTICE_FORM.querySelector('#timein');
+var addNoticeTimeOutField = ADD_NOTICE_FORM.querySelector('#timeout');
 /**
  * Changes Add Notice form price field min value based on offer type
  * @param {string} offerType - given offer type
@@ -206,13 +208,22 @@ var updateAddNoticeMinPrice = function (offerType) {
       break;
   }
 };
+
 /**
  * Add notice form field change event handler
  * @param {InputEvent} evt - HTML Element input event
  */
 var onAddNoticeFormFieldChange = function (evt) {
-  if (evt.target.id === 'type') {
-    updateAddNoticeMinPrice(evt.target.value);
+  switch (evt.target.id) {
+    case 'type':
+      updateAddNoticeMinPrice(evt.target.value);
+      break;
+    case 'timein':
+      addNoticeTimeOutField.value = evt.target.value;
+      break;
+    case 'timeout':
+      addNoticeTimeInField.value = evt.target.value;
+      break;
   }
 };
 ADD_NOTICE_FORM.addEventListener('input', onAddNoticeFormFieldChange);
