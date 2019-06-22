@@ -9,10 +9,22 @@ var PinLocation = {
   Y_MAX: 630
 };
 var OfferTypes = {
-  PALACE: 'Дворец',
-  FLAT: 'Квартира',
-  HOUSE: 'Дом',
-  BUNGALO: 'Бунгало'
+  PALACE: {
+    name: 'Дворец',
+    minPrice: 10000
+  },
+  FLAT: {
+    name: 'Квартира',
+    minPrice: 1000
+  },
+  HOUSE: {
+    name: 'Дом',
+    minPrice: 5000
+  },
+  BUNGALO: {
+    name: 'Бунгало',
+    minPrice: 0
+  }
 };
 var MAP_PINS_ELEMENT = document.querySelector('.map__pins');
 var MAP_ELEMENT = document.querySelector('.map');
@@ -59,7 +71,7 @@ var generateMockData = function (dataNumber) {
         avatar: AVATAR_IMAGE_SOURCE.replace('{{xx}}', (i + 1) < 10 ? '0' + (i + 1) : (i + 1))
       },
       offer: {
-        type: getRandomElementFromArray(Object.keys(OfferTypes))
+        type: getRandomElementFromArray(Object.keys(OfferTypes)).toLowerCase()
       },
       location: {
         x: generateRandomNumberFromRange(PinLocation.X_MIN, PinLocation.X_MAX),
@@ -184,29 +196,8 @@ var addNoticeTimeOutField = ADD_NOTICE_FORM.querySelector('#timeout');
  * @param {string} offerType - given offer type
  */
 var updateAddNoticeMinPrice = function (offerType) {
-  // TODO: move magic numbers to constants
-  switch (offerType) {
-    case 'bungalo':
-      addNoticePriceField.min = 0;
-      addNoticePriceField.placeholder = 0;
-      break;
-    case 'flat':
-      addNoticePriceField.min = 1000;
-      addNoticePriceField.placeholder = 1000;
-      break;
-    case 'house':
-      addNoticePriceField.min = 5000;
-      addNoticePriceField.placeholder = 5000;
-      break;
-    case 'palace':
-      addNoticePriceField.min = 10000;
-      addNoticePriceField.placeholder = 10000;
-      break;
-    default:
-      addNoticePriceField.min = 0;
-      addNoticePriceField.placeholder = 0;
-      break;
-  }
+  addNoticePriceField.min = OfferTypes[offerType.toUpperCase()].minPrice;
+  addNoticePriceField.placeholder = addNoticePriceField.min;
 };
 
 /**
