@@ -2,6 +2,9 @@
 
 var ADS_NUMBER = 8;
 var AVATAR_IMAGE_SOURCE = 'img/avatars/user{{xx}}.png';
+var MAP_PIN_WIDTH = 50;
+var MAP_PIN_HEIGHT = 70;
+
 var PinLocation = {
   X_MIN: 0,
   X_MAX: 1200,
@@ -26,16 +29,15 @@ var OfferTypes = {
     minPrice: 0
   }
 };
-var MAP_PINS_ELEMENT = document.querySelector('.map__pins');
-var MAP_ELEMENT = document.querySelector('.map');
-var PIN_TEMPLATE_ELEMENT = document.querySelector('#pin').content.querySelector('.map__pin');
-var MAP_PIN_WIDTH = 50;
-var MAP_PIN_HEIGHT = 70;
-var MAP_PIN_MAIN_ELEMENT = MAP_PINS_ELEMENT.querySelector('.map__pin--main');
-var ADD_NOTICE_FORM = document.querySelector('.ad-form');
-var ADD_NOTICE_FORM_FIELDS = ADD_NOTICE_FORM.querySelectorAll('fieldset');
-var MAP_FILTERS_FORM = MAP_ELEMENT.querySelector('.map__filters');
-var MAP_FILTERS_FORM_FIELDS = MAP_FILTERS_FORM.querySelectorAll('fieldset, select');
+
+var mapPinsElement = document.querySelector('.map__pins');
+var mapElement = document.querySelector('.map');
+var pinTemplateElement = document.querySelector('#pin').content.querySelector('.map__pin');
+var mapPinMainElement = mapPinsElement.querySelector('.map__pin--main');
+var addNoticeForm = document.querySelector('.ad-form');
+var addNoticeFormFields = addNoticeForm.querySelectorAll('fieldset');
+var mapFiltersForm = mapElement.querySelector('.map__filters');
+var mapFiltersFormFields = mapFiltersForm.querySelectorAll('fieldset, select');
 
 /**
  * Returns random element of an array
@@ -110,18 +112,18 @@ var renderMapPins = function (ads) {
   var fragment = document.createDocumentFragment();
 
   ads.forEach(function (ad) {
-    fragment.appendChild(createPinElement(PIN_TEMPLATE_ELEMENT, ad));
+    fragment.appendChild(createPinElement(pinTemplateElement, ad));
   });
 
-  MAP_PINS_ELEMENT.appendChild(fragment);
+  mapPinsElement.appendChild(fragment);
 };
 
 /**
  * Disables Add notice form and fields
  */
 var disableAddNoticeForm = function () {
-  ADD_NOTICE_FORM.classList.add('ad-form--disabled');
-  ADD_NOTICE_FORM_FIELDS.forEach(function (element) {
+  addNoticeForm.classList.add('ad-form--disabled');
+  addNoticeFormFields.forEach(function (element) {
     element.disabled = true;
   });
 };
@@ -130,8 +132,8 @@ var disableAddNoticeForm = function () {
  * Enable Add notice form and fields
  */
 var enableAddNoticeForm = function () {
-  ADD_NOTICE_FORM.classList.remove('ad-form--disabled');
-  ADD_NOTICE_FORM_FIELDS.forEach(function (element) {
+  addNoticeForm.classList.remove('ad-form--disabled');
+  addNoticeFormFields.forEach(function (element) {
     element.disabled = false;
   });
 };
@@ -140,7 +142,7 @@ var enableAddNoticeForm = function () {
  * Disables Map filters form
  */
 var disableMapFiltersForm = function () {
-  MAP_FILTERS_FORM_FIELDS.forEach(function (element) {
+  mapFiltersFormFields.forEach(function (element) {
     element.disabled = true;
   });
 };
@@ -149,7 +151,7 @@ var disableMapFiltersForm = function () {
  * Enables Map filters form
  */
 var enableMapFiltersForm = function () {
-  MAP_FILTERS_FORM_FIELDS.forEach(function (element) {
+  mapFiltersFormFields.forEach(function (element) {
     element.disabled = false;
   });
 };
@@ -159,7 +161,7 @@ var enableMapFiltersForm = function () {
  */
 var activateBookingPage = function () {
   renderMapPins(generateMockData(ADS_NUMBER));
-  MAP_ELEMENT.classList.remove('map--faded');
+  mapElement.classList.remove('map--faded');
   enableAddNoticeForm();
   enableMapFiltersForm();
 };
@@ -168,7 +170,7 @@ var activateBookingPage = function () {
  * Deactivates booking page
  */
 var deactivateBookingPage = function () {
-  MAP_ELEMENT.classList.add('map--faded');
+  mapElement.classList.add('map--faded');
   disableAddNoticeForm();
   disableMapFiltersForm();
 };
@@ -177,20 +179,20 @@ var deactivateBookingPage = function () {
  * Sets Add notice form's address field to initial value (center of map__pin--main)
  */
 var initializeNoticeAddress = function () {
-  ADD_NOTICE_FORM.querySelector('#address').value =
-    Math.floor((MAP_PIN_MAIN_ELEMENT.offsetLeft + MAP_PIN_MAIN_ELEMENT.offsetWidth / 2)) + ', '
-    + Math.floor((MAP_PIN_MAIN_ELEMENT.offsetTop + MAP_PIN_MAIN_ELEMENT.offsetHeight / 2));
+  addNoticeForm.querySelector('#address').value =
+    Math.floor((mapPinMainElement.offsetLeft + mapPinMainElement.offsetWidth / 2)) + ', '
+    + Math.floor((mapPinMainElement.offsetTop + mapPinMainElement.offsetHeight / 2));
 };
 
 initializeNoticeAddress();
 deactivateBookingPage();
-MAP_PIN_MAIN_ELEMENT.addEventListener('click', function () {
+mapPinMainElement.addEventListener('click', function () {
   activateBookingPage();
 });
 
-var addNoticePriceField = ADD_NOTICE_FORM.querySelector('#price');
-var addNoticeTimeInField = ADD_NOTICE_FORM.querySelector('#timein');
-var addNoticeTimeOutField = ADD_NOTICE_FORM.querySelector('#timeout');
+var addNoticePriceField = addNoticeForm.querySelector('#price');
+var addNoticeTimeInField = addNoticeForm.querySelector('#timein');
+var addNoticeTimeOutField = addNoticeForm.querySelector('#timeout');
 /**
  * Changes Add Notice form price field min value based on offer type
  * @param {string} offerType - given offer type
@@ -217,5 +219,5 @@ var onAddNoticeFormFieldChange = function (evt) {
       break;
   }
 };
-ADD_NOTICE_FORM.addEventListener('input', onAddNoticeFormFieldChange);
+addNoticeForm.addEventListener('input', onAddNoticeFormFieldChange);
 
