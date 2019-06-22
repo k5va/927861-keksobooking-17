@@ -8,8 +8,12 @@ var PinLocation = {
   Y_MIN: 130,
   Y_MAX: 630
 };
-var USERS_SORT_THRESHOLD = 0.5;
-var OFFER_TYPES = ['palace', 'flat', 'house', 'bungalo'];
+var OfferTypes = {
+  palace: 'дворец',
+  flat: 'квартира',
+  house: 'дом',
+  bungalo: 'бунгало'
+};
 var MAP_PINS_ELEMENT = document.querySelector('.map__pins');
 var MAP_ELEMENT = document.querySelector('.map');
 var PIN_TEMPLATE_ELEMENT = document.querySelector('#pin').content.querySelector('.map__pin');
@@ -55,7 +59,7 @@ var generateMockData = function (dataNumber) {
         avatar: AVATAR_IMAGE_SOURCE.replace('{{xx}}', (i + 1) < 10 ? '0' + (i + 1) : (i + 1))
       },
       offer: {
-        type: getRandomElementFromArray(OFFER_TYPES)
+        type: getRandomElementFromArray(Object.keys(OfferTypes))
       },
       location: {
         x: generateRandomNumberFromRange(PinLocation.X_MIN, PinLocation.X_MAX),
