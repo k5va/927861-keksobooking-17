@@ -9,10 +9,10 @@ var PinLocation = {
   Y_MAX: 630
 };
 var OfferTypes = {
-  palace: 'дворец',
-  flat: 'квартира',
-  house: 'дом',
-  bungalo: 'бунгало'
+  PALACE: 'Дворец',
+  FLAT: 'Квартира',
+  HOUSE: 'Дом',
+  BUNGALO: 'Бунгало'
 };
 var MAP_PINS_ELEMENT = document.querySelector('.map__pins');
 var MAP_ELEMENT = document.querySelector('.map');
@@ -165,7 +165,7 @@ var deactivateBookingPage = function () {
  * Sets Add notice form's address field to initial value (center of map__pin--main)
  */
 var initializeNoticeAddress = function () {
-  ADD_NOTICE_FORM.querySelector('input[name=address]').value =
+  ADD_NOTICE_FORM.querySelector('#address').value =
     Math.floor((MAP_PIN_MAIN_ELEMENT.offsetLeft + MAP_PIN_MAIN_ELEMENT.offsetWidth / 2)) + ', '
     + Math.floor((MAP_PIN_MAIN_ELEMENT.offsetTop + MAP_PIN_MAIN_ELEMENT.offsetHeight / 2));
 };
@@ -175,4 +175,45 @@ deactivateBookingPage();
 MAP_PIN_MAIN_ELEMENT.addEventListener('click', function () {
   activateBookingPage();
 });
+
+var addNoticePriceField = ADD_NOTICE_FORM.querySelector('#price');
+/**
+ * Changes Add Notice form price field min value based on offer type
+ * @param {string} offerType - given offer type
+ */
+var updateAddNoticeMinPrice = function (offerType) {
+  // TODO: move magic numbers to constants
+  switch (offerType) {
+    case 'bungalo':
+      addNoticePriceField.min = 0;
+      addNoticePriceField.placeholder = 0;
+      break;
+    case 'flat':
+      addNoticePriceField.min = 1000;
+      addNoticePriceField.placeholder = 1000;
+      break;
+    case 'house':
+      addNoticePriceField.min = 5000;
+      addNoticePriceField.placeholder = 5000;
+      break;
+    case 'palace':
+      addNoticePriceField.min = 10000;
+      addNoticePriceField.placeholder = 10000;
+      break;
+    default:
+      addNoticePriceField.min = 0;
+      addNoticePriceField.placeholder = 0;
+      break;
+  }
+};
+/**
+ * Add notice form field change event handler
+ * @param {InputEvent} evt - HTML Element input event
+ */
+var onAddNoticeFormFieldChange = function (evt) {
+  if (evt.target.id === 'type') {
+    updateAddNoticeMinPrice(evt.target.value);
+  }
+};
+ADD_NOTICE_FORM.addEventListener('input', onAddNoticeFormFieldChange);
 
