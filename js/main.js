@@ -156,43 +156,54 @@ var enableMapFiltersForm = function () {
   });
 };
 
+var isBookingPageActive = false;
 /**
  * Activates booking page
  */
 var activateBookingPage = function () {
-  renderMapPins(generateMockData(ADS_NUMBER));
-  mapElement.classList.remove('map--faded');
-  enableAddNoticeForm();
-  enableMapFiltersForm();
+  if (!isBookingPageActive) {
+    renderMapPins(generateMockData(ADS_NUMBER));
+    mapElement.classList.remove('map--faded');
+    enableAddNoticeForm();
+    enableMapFiltersForm();
+
+    isBookingPageActive = true;
+  }
 };
 
 /**
  * Deactivates booking page
  */
 var deactivateBookingPage = function () {
-  mapElement.classList.add('map--faded');
-  disableAddNoticeForm();
-  disableMapFiltersForm();
-};
+  if (isBookingPageActive) {
+    mapElement.classList.add('map--faded');
+    disableAddNoticeForm();
+    disableMapFiltersForm();
 
-/**
- * Sets Add notice form's address field to initial value (center of map__pin--main)
- */
-var initializeNoticeAddress = function () {
-  addNoticeForm.querySelector('#address').value =
-    Math.floor((mapPinMainElement.offsetLeft + mapPinMainElement.offsetWidth / 2)) + ', '
-    + Math.floor((mapPinMainElement.offsetTop + mapPinMainElement.offsetHeight / 2));
+    isBookingPageActive = false;
+  }
 };
-
-initializeNoticeAddress();
-deactivateBookingPage();
-mapPinMainElement.addEventListener('click', function () {
-  activateBookingPage();
-});
 
 var addNoticePriceField = addNoticeForm.querySelector('#price');
 var addNoticeTimeInField = addNoticeForm.querySelector('#timein');
 var addNoticeTimeOutField = addNoticeForm.querySelector('#timeout');
+var addNoticeAddressField = addNoticeForm.querySelector('#address');
+
+/**
+ * Sets add notice form address field to given cooridinates
+ * @param {number} x - x coordinate
+ * @param {number} y - y coordinate
+ */
+var setNoticeAddress = function (x, y) {
+  addNoticeAddressField.value = Math.floor(x) + ', ' + Math.floor(y);
+};
+// set add form address field to initial position
+setNoticeAddress(
+    (mapPinMainElement.offsetLeft + mapPinMainElement.offsetWidth / 2),
+    (mapPinMainElement.offsetTop + mapPinMainElement.offsetHeight / 2)
+);
+deactivateBookingPage();
+
 /**
  * Changes Add Notice form price field min value based on offer type
  * @param {string} offerType - given offer type
@@ -221,3 +232,67 @@ var onAddNoticeFormFieldChange = function (evt) {
 };
 addNoticeForm.addEventListener('input', onAddNoticeFormFieldChange);
 
+/**
+ * Moves given element to specifeed X, Y position.
+ * @param {HTMLElement} element - HTMlElement object to be moved
+ * @param {*} x - x coordinate
+ * @param {*} y - y coordinate
+ */
+var moveElementToPosition = function (element, x, y) {
+  if ((x >= PinLocation.X_MIN && x <= PinLocation.X_MAX)
+    && (y >= PinLocation.Y_MIN && y <= PinLocation.Y_MAX)) {
+
+    element.style.left = x + 'px';
+    element.style.top = y + 'px';
+  }
+};
+
+mapPinMainElement.addEventListener('mousedown', function (evt) {
+  evt.preventDefault();
+
+  activateBookingPage();
+  var setupElementCurrentPosition = {
+    x: mapPinMainElement.offsetLeft,
+    y: mapPinMainElement.offsetTop
+  };
+
+  /**
+   * Mouse move handler for upload element
+   * @param {MouseEvent} moveEvt - Mouse event DOM object
+   */
+  var onUploadMouseMove = function (moveEvt) {
+    moveEvt.preventDefault();
+
+    var shift = {
+      x: moveEvt.clientX - evt.clientX,
+      y: moveEvt.clientY - evt.clientY,
+    };
+
+    moveElementToPosition(mapPinMainElement,
+        setupElementCurrentPosition.x + shift.x,
+        setupElementCurrentPosition.y + shift.y
+    );
+    setNoticeAddress(
+        (mapPinMainElement.offsetLeft + mapPinMainElement.offsetWidth / 2),
+        (mapPinMainElement.offsetTop + mapPinMainElement.offsetHeight)
+    );
+  };
+  document.addEventListener('mousemove', onUploadMouseMove);
+
+  /**
+   * Mouse Up handler for upload element
+   * @param {MouseEvent} upEvt - Mouse event DOM object
+   */
+  var onUploadMouseUp = function (upEvt) {
+    upEvt.preventDefault();
+
+    setNoticeAddress(
+        (mapPinMainElement.offsetLeft + mapPinMainElement.offsetWidth / 2),
+        (mapPinMainElement.offsetTop + mapPinMainElement.offsetHeight)
+    );
+
+    document.removeEventListener('mousemove', onUploadMouseMove);
+    document.removeEventListener('mouseup', onUploadMouseUp);
+  };
+  document.addEventListener('mouseup', onUploadMouseUp);
+});
