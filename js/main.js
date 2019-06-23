@@ -260,10 +260,10 @@ mapPinMainElement.addEventListener('mousedown', function (evt) {
   };
 
   /**
-   * Mouse move handler for upload element
+   * Mouse move handler
    * @param {MouseEvent} moveEvt - Mouse event DOM object
    */
-  var onUploadMouseMove = function (moveEvt) {
+  var onMouseMove = function (moveEvt) {
     moveEvt.preventDefault();
 
     activateBookingPage();
@@ -282,13 +282,13 @@ mapPinMainElement.addEventListener('mousedown', function (evt) {
         (mapPinMainElement.offsetTop + mapPinMainElement.offsetHeight)
     );
   };
-  document.addEventListener('mousemove', onUploadMouseMove);
+  document.addEventListener('mousemove', onMouseMove);
 
   /**
-   * Mouse Up handler for upload element
+   * Mouse Up handler
    * @param {MouseEvent} upEvt - Mouse event DOM object
    */
-  var onUploadMouseUp = function (upEvt) {
+  var onMouseUp = function (upEvt) {
     upEvt.preventDefault();
 
     setNoticeAddress(
@@ -296,8 +296,8 @@ mapPinMainElement.addEventListener('mousedown', function (evt) {
         (mapPinMainElement.offsetTop + mapPinMainElement.offsetHeight)
     );
 
-    document.removeEventListener('mousemove', onUploadMouseMove);
-    document.removeEventListener('mouseup', onUploadMouseUp);
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onMouseUp);
   };
-  document.addEventListener('mouseup', onUploadMouseUp);
+  document.addEventListener('mouseup', onMouseUp);
 });
