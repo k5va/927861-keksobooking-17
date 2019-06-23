@@ -254,7 +254,6 @@ var moveMainPinToPosition = function (x, y) {
 mapPinMainElement.addEventListener('mousedown', function (evt) {
   evt.preventDefault();
 
-  activateBookingPage();
   var setupElementCurrentPosition = {
     x: mapPinMainElement.offsetLeft,
     y: mapPinMainElement.offsetTop
@@ -266,6 +265,8 @@ mapPinMainElement.addEventListener('mousedown', function (evt) {
    */
   var onUploadMouseMove = function (moveEvt) {
     moveEvt.preventDefault();
+
+    activateBookingPage();
 
     var shift = {
       x: moveEvt.clientX - evt.clientX,
