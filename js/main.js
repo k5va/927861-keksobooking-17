@@ -233,17 +233,18 @@ var onAddNoticeFormFieldChange = function (evt) {
 addNoticeForm.addEventListener('input', onAddNoticeFormFieldChange);
 
 /**
- * Moves given element to specifeed X, Y position.
- * @param {HTMLElement} element - HTMlElement object to be moved
+ * Moves main pin element to specifeed X, Y position within fixed boundaries.
  * @param {*} x - x coordinate
  * @param {*} y - y coordinate
  */
-var moveElementToPosition = function (element, x, y) {
-  if ((x >= PinLocation.X_MIN && x <= PinLocation.X_MAX)
-    && (y >= PinLocation.Y_MIN && y <= PinLocation.Y_MAX)) {
+var moveMainPinToPosition = function (x, y) {
+  if (x >= (PinLocation.X_MIN - mapPinMainElement.offsetWidth / 2)
+    && x <= (PinLocation.X_MAX - mapPinMainElement.offsetWidth / 2)
+    && y >= (PinLocation.Y_MIN - mapPinMainElement.offsetHeight)
+    && y <= (PinLocation.Y_MAX - mapPinMainElement.offsetHeight)) {
 
-    element.style.left = x + 'px';
-    element.style.top = y + 'px';
+    mapPinMainElement.style.left = x + 'px';
+    mapPinMainElement.style.top = y + 'px';
   }
 };
 
@@ -268,7 +269,7 @@ mapPinMainElement.addEventListener('mousedown', function (evt) {
       y: moveEvt.clientY - evt.clientY,
     };
 
-    moveElementToPosition(mapPinMainElement,
+    moveMainPinToPosition(
         setupElementCurrentPosition.x + shift.x,
         setupElementCurrentPosition.y + shift.y
     );
