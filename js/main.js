@@ -234,16 +234,19 @@ addNoticeForm.addEventListener('input', onAddNoticeFormFieldChange);
 
 /**
  * Moves main pin element to specifeed X, Y position within fixed boundaries.
- * @param {*} x - x coordinate
- * @param {*} y - y coordinate
+ * @param {number} x - x coordinate
+ * @param {number} y - y coordinate
  */
 var moveMainPinToPosition = function (x, y) {
   if (x >= (PinLocation.X_MIN - mapPinMainElement.offsetWidth / 2)
-    && x <= (PinLocation.X_MAX - mapPinMainElement.offsetWidth / 2)
-    && y >= (PinLocation.Y_MIN - mapPinMainElement.offsetHeight)
-    && y <= (PinLocation.Y_MAX - mapPinMainElement.offsetHeight)) {
+    && x <= (PinLocation.X_MAX - mapPinMainElement.offsetWidth / 2)) {
 
     mapPinMainElement.style.left = x + 'px';
+  }
+
+  if (y >= (PinLocation.Y_MIN - mapPinMainElement.offsetHeight)
+    && y <= (PinLocation.Y_MAX - mapPinMainElement.offsetHeight)) {
+
     mapPinMainElement.style.top = y + 'px';
   }
 };
