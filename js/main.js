@@ -7,7 +7,6 @@ var isBookingPageActive = false;
  */
 var activateBookingPage = function () {
   if (!isBookingPageActive) {
-    window.map.renderMapPins();
     window.map.enableMap();
     window.noticeForm.enableAddNoticeForm();
     window.filtersForm.enableMapFiltersForm();

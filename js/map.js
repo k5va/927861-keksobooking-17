@@ -11,6 +11,7 @@
   var mapElement = document.querySelector('.map');
   var mapPinsElement = document.querySelector('.map__pins');
   var mapPinMainElement = mapPinsElement.querySelector('.map__pin--main');
+  var areMapPinsRendered = false;
 
   /**
    * Creates Map pins DOM elements and renders them to the DOM
@@ -45,9 +46,13 @@
   };
 
   /**
-   * Enables pin map
+   * Enables pin map and renders pins, if not rendered before.
    */
   var enableMap = function () {
+    if (!areMapPinsRendered) {
+      renderMapPins();
+      areMapPinsRendered = true;
+    }
     mapElement.classList.remove('map--faded');
   };
 
@@ -127,7 +132,6 @@
   };
 
   window.map = {
-    renderMapPins: renderMapPins,
     initMainPinDragAndDrop: initMainPinDragAndDrop,
     enableMap: enableMap,
     disableMap: disableMap,
