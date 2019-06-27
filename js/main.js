@@ -30,7 +30,9 @@ var deactivateBookingPage = function () {
 
 // set add form address field to initial position
 window.noticeForm.setNoticeAddress(window.map.getMainPinPositionX(), window.map.getMainPinPositionY());
+// page should not be active when opened
 deactivateBookingPage();
+// initialize main pin drag and drop feature
 window.map.initMainPinDragAndDrop(
     function (x, y) { // onDrag handler
       activateBookingPage();
