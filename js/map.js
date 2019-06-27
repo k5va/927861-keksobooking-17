@@ -96,8 +96,6 @@
       var onMouseMove = function (moveEvt) {
         moveEvt.preventDefault();
 
-        // activateBookingPage();
-
         var shift = {
           x: moveEvt.clientX - evt.clientX,
           y: moveEvt.clientY - evt.clientY,
@@ -107,11 +105,6 @@
             setupElementCurrentPosition.x + shift.x,
             setupElementCurrentPosition.y + shift.y
         );
-        /* setNoticeAddress(
-            (mapPinMainElement.offsetLeft + mapPinMainElement.offsetWidth / 2),
-            (mapPinMainElement.offsetTop + mapPinMainElement.offsetHeight)
-        );
-        */
         onDrag(mapPinMainElement.offsetLeft + mapPinMainElement.offsetWidth / 2,
             mapPinMainElement.offsetTop + mapPinMainElement.offsetHeight);
       };
@@ -124,11 +117,6 @@
       var onMouseUp = function (upEvt) {
         upEvt.preventDefault();
 
-        /* setNoticeAddress(
-            (mapPinMainElement.offsetLeft + mapPinMainElement.offsetWidth / 2),
-            (mapPinMainElement.offsetTop + mapPinMainElement.offsetHeight)
-        );
-        */
         document.removeEventListener('mousemove', onMouseMove);
         document.removeEventListener('mouseup', onMouseUp);
 

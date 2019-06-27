@@ -5,7 +5,6 @@
   var mapFiltersForm = mapElement.querySelector('.map__filters');
   var mapFiltersFormFields = mapFiltersForm.querySelectorAll('fieldset, select');
 
-
   /**
    * Disables Map filters form
    */
