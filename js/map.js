@@ -9,7 +9,6 @@
   };
   var mockData = window.data.generateMockData(PinLocation);
   var mapElement = document.querySelector('.map');
-  var pinTemplateElement = document.querySelector('#pin').content.querySelector('.map__pin');
   var mapPinsElement = document.querySelector('.map__pins');
   var mapPinMainElement = mapPinsElement.querySelector('.map__pin--main');
 
@@ -20,7 +19,7 @@
     var fragment = document.createDocumentFragment();
 
     mockData.forEach(function (ad) {
-      fragment.appendChild(window.pin.createPinElement(pinTemplateElement, ad));
+      fragment.appendChild(window.pin.createPinElement(ad));
     });
 
     mapPinsElement.appendChild(fragment);
