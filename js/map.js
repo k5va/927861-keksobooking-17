@@ -7,23 +7,39 @@
     Y_MIN: 130,
     Y_MAX: 630
   };
-  var mockData = window.data.generateMockData(PinLocation);
+  // var adsData = window.data.generateMockData(PinLocation);
   var mapElement = document.querySelector('.map');
   var mapPinsElement = document.querySelector('.map__pins');
   var mapPinMainElement = mapPinsElement.querySelector('.map__pin--main');
   var areMapPinsRendered = false;
 
   /**
-   * Creates Map pins DOM elements and renders them to the DOM
+   * Ads data load success handler.
+   * @param {Array} data - backend data
    */
-  var renderMapPins = function () {
+  var onAdsDataLoadSuccess = function (data) {
     var fragment = document.createDocumentFragment();
 
-    mockData.forEach(function (ad) {
+    data.forEach(function (ad) {
       fragment.appendChild(window.pin.createPinElement(ad));
     });
 
     mapPinsElement.appendChild(fragment);
+  };
+
+  /**
+   * Ads data load error handler
+   * @param {string} errorMessage - error message
+   */
+  var onAdsDataLoadError = function (errorMessage) {
+    alert(errorMessage);
+  };
+
+  /**
+   * Creates Map pins DOM elements and renders them to the DOM
+   */
+  var renderMapPins = function () {
+    window.backend.load(onAdsDataLoadSuccess, onAdsDataLoadError);
   };
 
   /**
