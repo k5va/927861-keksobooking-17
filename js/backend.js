@@ -5,6 +5,10 @@
   var SAVE_DATA_URL = 'https://js.dump.academy/keksobooking';
   var REQUEST_TIMEOUT = 10000; // 10s
 
+  var ResponseCodes = {
+    OK: 200
+  };
+
   /**
    * Creates XMLHttpRequest object and initialize it.
    *
@@ -22,7 +26,7 @@
     };
 
     xhr.addEventListener('load', function () {
-      if (xhr.status === 200) {
+      if (xhr.status === ResponseCodes.OK) {
         onLoad(xhr.response);
       } else {
         onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
