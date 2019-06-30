@@ -31,7 +31,6 @@
    * @param {function} onError - error callback
    */
   var renderMapPins = function (onError) {
-    console.log('backend.load called');
     window.backend.load(onAdsDataLoadSuccess, function (errorMessage) {
       areMapPinsRendered = false;
       onError(errorMessage);
