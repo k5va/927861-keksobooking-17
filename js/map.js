@@ -32,7 +32,10 @@
    * @param {string} errorMessage - error message
    */
   var onAdsDataLoadError = function (errorMessage) {
-    alert(errorMessage);
+    window.errorMessage.show(errorMessage, function () {
+      areMapPinsRendered = false;
+      disableMap();
+    });
   };
 
   /**
