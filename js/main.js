@@ -7,7 +7,11 @@ var isBookingPageActive = false;
  */
 var activateBookingPage = function () {
   if (!isBookingPageActive) {
-    window.map.enableMap();
+    window.map.enableMap(function (errorMessage) {
+      window.errorMessage.show(errorMessage, function () {
+        deactivateBookingPage();
+      });
+    });
     window.noticeForm.enableAddNoticeForm();
     window.filtersForm.enableMapFiltersForm();
 

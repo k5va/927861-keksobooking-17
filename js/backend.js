@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var LOAD_DATA_URL = 'https://js.dump.academy/keksobooking/dat';
+  var LOAD_DATA_URL = 'https://js.dump.academy/keksobooking/data';
   var SAVE_DATA_URL = 'https://js.dump.academy/keksobooking';
   var REQUEST_TIMEOUT = 10000; // 10s
 

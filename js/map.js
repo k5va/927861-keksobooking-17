@@ -7,7 +7,6 @@
     Y_MIN: 130,
     Y_MAX: 630
   };
-  // var adsData = window.data.generateMockData(PinLocation);
   var mapElement = document.querySelector('.map');
   var mapPinsElement = document.querySelector('.map__pins');
   var mapPinMainElement = mapPinsElement.querySelector('.map__pin--main');
@@ -28,21 +27,15 @@
   };
 
   /**
-   * Ads data load error handler
-   * @param {string} errorMessage - error message
-   */
-  var onAdsDataLoadError = function (errorMessage) {
-    window.errorMessage.show(errorMessage, function () {
-      areMapPinsRendered = false;
-      disableMap();
-    });
-  };
-
-  /**
    * Creates Map pins DOM elements and renders them to the DOM
+   * @param {function} onError - error callback
    */
-  var renderMapPins = function () {
-    window.backend.load(onAdsDataLoadSuccess, onAdsDataLoadError);
+  var renderMapPins = function (onError) {
+    console.log('backend.load called');
+    window.backend.load(onAdsDataLoadSuccess, function (errorMessage) {
+      areMapPinsRendered = false;
+      onError(errorMessage);
+    });
   };
 
   /**
@@ -66,10 +59,11 @@
 
   /**
    * Enables pin map and renders pins, if not rendered before.
+   * @param {function} onError - error callback
    */
-  var enableMap = function () {
+  var enableMap = function (onError) {
     if (!areMapPinsRendered) {
-      renderMapPins();
+      renderMapPins(onError);
       areMapPinsRendered = true;
     }
     mapElement.classList.remove('map--faded');
