@@ -1,6 +1,7 @@
 'use strict';
 
-var isBookingPageActive = false;
+// Needs to be true in order to corectly deactivate later
+var isBookingPageActive = true;
 
 /**
  * Activates booking page
