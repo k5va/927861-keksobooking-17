@@ -1,13 +1,18 @@
 'use strict';
 
-var isBookingPageActive = false;
+// Needs to be true in order to corectly deactivate later
+var isBookingPageActive = true;
 
 /**
  * Activates booking page
  */
 var activateBookingPage = function () {
   if (!isBookingPageActive) {
-    window.map.enableMap();
+    window.map.enableMap(function (errorMessage) {
+      window.errorMessage.show(errorMessage, function () {
+        deactivateBookingPage();
+      });
+    });
     window.noticeForm.enableAddNoticeForm();
     window.filtersForm.enableMapFiltersForm();
 
