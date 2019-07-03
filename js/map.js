@@ -13,15 +13,33 @@
   var mapElement = document.querySelector('.map');
   var mapPinsElement = document.querySelector('.map__pins');
   var mapPinMainElement = mapPinsElement.querySelector('.map__pin--main');
-  var pinsFragment = null;
   var ads = null;
 
   /**
-   * Creates Map pins DOM elements and renders them to the DOM
+   * Removes all map pins from the DOM (except main pin)
    */
-  var renderMapPins = function (adsFilter) {
-    var filteredAds = adsFilter ? ads.filter(adsFilter) : ads;
-    pinsFragment = document.createDocumentFragment();
+  var clearMapPins = function () {
+    mapPinsElement
+      .querySelectorAll('.map__pin:not(.map__pin--main)')
+      .forEach(function (pin) {
+        mapPinsElement.removeChild(pin);
+      });
+  };
+
+  /**
+   * Filters ads data, creates Map pins DOM elements and renders them to the DOM
+   * @param {Array} filters - array of selected filters
+   */
+  var renderMapPins = function (filters) {
+    var filteredAds = ads;
+    if (filters) {
+      filters.forEach(function (filter) {
+        filteredAds = filteredAds.filter(filter);
+      });
+    }
+
+    clearMapPins();
+    var pinsFragment = document.createDocumentFragment();
 
     filteredAds.slice(0, MAX_PIN_NUMBER).forEach(function (ad) {
       pinsFragment.appendChild(window.pin.createPinElement(ad));
@@ -73,9 +91,6 @@
    */
   var disableMap = function () {
     ads = null;
-    if (pinsFragment) {
-      mapPinsElement.removeChild(pinsFragment);
-    }
     mapElement.classList.add('map--faded');
   };
 
@@ -152,6 +167,7 @@
     enableMap: enableMap,
     disableMap: disableMap,
     getMainPinPositionX: getMainPinPositionX,
-    getMainPinPositionY: getMainPinPositionY
+    getMainPinPositionY: getMainPinPositionY,
+    renderMapPins: renderMapPins
   };
 })();
