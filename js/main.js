@@ -14,7 +14,9 @@ var activateBookingPage = function () {
       });
     });
     window.noticeForm.enableAddNoticeForm();
-    window.filtersForm.enableMapFiltersForm();
+    window.filtersForm.enableMapFiltersForm(function (filters) {
+      window.map.renderMapPins(filters);
+    });
 
     isBookingPageActive = true;
   }

@@ -6,6 +6,7 @@
   var mapElement = document.querySelector('.map');
   var mapFiltersForm = mapElement.querySelector('.map__filters');
   var mapFiltersFormFields = mapFiltersForm.querySelectorAll('fieldset, select');
+  var onFilterChange = null;
   var fieldFilterMap = {
     // housing type field filter
     'housing-type': function (type) {
@@ -33,11 +34,13 @@
 
   /**
    * Enables Map filters form
+   * @param {function} onChange - callback on filter change
    */
-  var enableMapFiltersForm = function () {
+  var enableMapFiltersForm = function (onChange) {
     mapFiltersFormFields.forEach(function (element) {
       element.disabled = false;
     });
+    onFilterChange = onChange;
   };
 
   mapFiltersForm.addEventListener('input', function (evt) {
@@ -46,8 +49,7 @@
     } else {
       currentFilter[evt.target.name] = fieldFilterMap[evt.target.name](evt.target.value);
     }
-
-    window.map.renderMapPins(Object.values(currentFilter));
+    onFilterChange(Object.values(currentFilter));
   });
 
   window.filtersForm = {
