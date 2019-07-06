@@ -1,6 +1,9 @@
 'use strict';
 
 (function () {
+
+  var MAX_PIN_NUMBER = 5;
+
   var PinLocation = {
     X_MIN: 0,
     X_MAX: 1200,
@@ -10,31 +13,39 @@
   var mapElement = document.querySelector('.map');
   var mapPinsElement = document.querySelector('.map__pins');
   var mapPinMainElement = mapPinsElement.querySelector('.map__pin--main');
-  var areMapPinsRendered = false;
+  var ads = null;
 
   /**
-   * Ads data load success handler.
-   * @param {Array} data - backend data
+   * Removes all map pins from the DOM (except main pin)
    */
-  var onAdsDataLoadSuccess = function (data) {
-    var fragment = document.createDocumentFragment();
-
-    data.forEach(function (ad) {
-      fragment.appendChild(window.pin.createPinElement(ad));
-    });
-
-    mapPinsElement.appendChild(fragment);
+  var clearMapPins = function () {
+    mapPinsElement
+      .querySelectorAll('.map__pin:not(.map__pin--main)')
+      .forEach(function (pin) {
+        mapPinsElement.removeChild(pin);
+      });
   };
 
   /**
-   * Creates Map pins DOM elements and renders them to the DOM
-   * @param {function} onError - error callback
+   * Filters ads data, creates Map pins DOM elements and renders them to the DOM
+   * @param {Array} filters - array of selected filters
    */
-  var renderMapPins = function (onError) {
-    window.backend.load(onAdsDataLoadSuccess, function (errorMessage) {
-      areMapPinsRendered = false;
-      onError(errorMessage);
+  var renderMapPins = function (filters) {
+    var filteredAds = ads;
+    if (filters) {
+      filters.forEach(function (filter) {
+        filteredAds = filteredAds.filter(filter);
+      });
+    }
+
+    clearMapPins();
+    var pinsFragment = document.createDocumentFragment();
+
+    filteredAds.slice(0, MAX_PIN_NUMBER).forEach(function (ad) {
+      pinsFragment.appendChild(window.pin.createPinElement(ad));
     });
+
+    mapPinsElement.appendChild(pinsFragment);
   };
 
   /**
@@ -57,21 +68,29 @@
   };
 
   /**
+   * Ads data load success handler.
+   * @param {Array} data - backend data
+   */
+  var onAdsDataLoadSuccess = function (data) {
+    ads = data;
+    renderMapPins();
+    mapElement.classList.remove('map--faded');
+  };
+
+
+  /**
    * Enables pin map and renders pins, if not rendered before.
    * @param {function} onError - error callback
    */
   var enableMap = function (onError) {
-    if (!areMapPinsRendered) {
-      renderMapPins(onError);
-      areMapPinsRendered = true;
-    }
-    mapElement.classList.remove('map--faded');
+    window.backend.load(onAdsDataLoadSuccess, onError);
   };
 
   /**
    * Disables pin map
    */
   var disableMap = function () {
+    ads = null;
     mapElement.classList.add('map--faded');
   };
 
@@ -148,6 +167,7 @@
     enableMap: enableMap,
     disableMap: disableMap,
     getMainPinPositionX: getMainPinPositionX,
-    getMainPinPositionY: getMainPinPositionY
+    getMainPinPositionY: getMainPinPositionY,
+    renderMapPins: renderMapPins
   };
 })();
