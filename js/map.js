@@ -41,8 +41,8 @@
     clearMapPins();
     var pinsFragment = document.createDocumentFragment();
 
-    filteredAds.slice(0, MAX_PIN_NUMBER).forEach(function (ad) {
-      pinsFragment.appendChild(window.pin.createPinElement(ad));
+    filteredAds.slice(0, MAX_PIN_NUMBER).forEach(function (ad, i) {
+      pinsFragment.appendChild(window.pin.createPinElement(ad, i));
     });
 
     mapPinsElement.appendChild(pinsFragment);
