@@ -3,6 +3,10 @@
 (function () {
   var MAP_PIN_WIDTH = 50;
   var MAP_PIN_HEIGHT = 70;
+  var KeyCode = {
+    ESC: 27
+  };
+
 
   var pinTemplateElement = document.querySelector('#pin').content.querySelector('.map__pin');
   var pinCardTemplateElement = document.querySelector('#card').content.querySelector('.map__card');
@@ -68,21 +72,21 @@
       card.querySelector('.popup__avatar').src = ad.author.avatar;
     },
     'popup__features': function (card, ad) {
-      var featuresElement = card.querySelector('.popup__features');
-      featuresElement.innerHTML = '';
-
-      ad.offer.features.forEach(function (feature) {
-        featuresElement.innerHTML += '<li class="popup__feature popup__feature--' + feature + '"></li>';
-      });
+      card.querySelector('.popup__features').innerHTML =
+        ad.offer.features.reduce(
+            function (accumulator, feature) {
+              return accumulator + '<li class="popup__feature popup__feature--' + feature + '"></li>';
+            }, '' // initial value
+        );
     },
     'popup__photos': function (card, ad) {
-      var photosElement = card.querySelector('.popup__photos');
-      photosElement.innerHTML = '';
-
-      ad.offer.photos.forEach(function (photo) {
-        photosElement.innerHTML +=
-            '<img src="' + photo + '" class="popup__photo" width="45" height="40" alt="Фотография жилья">';
-      });
+      card.querySelector('.popup__photos').innerHTML =
+        ad.offer.photos.reduce(
+            function (accumulator, photo) {
+              return accumulator +
+                '<img src="' + photo + '" class="popup__photo" width="45" height="40" alt="Фотография жилья">';
+            }, '' // initial value
+        );
     }
   };
 
@@ -96,6 +100,34 @@
     Object.keys(adCardFieldMap).forEach(function (field) {
       adCardFieldMap[field](cardElement, ad);
     });
+
+    /**
+     * Closes popup
+     */
+    var closePopup = function () {
+      cardElement.remove();
+    };
+
+    cardElement
+      .querySelector('.popup__close')
+      .addEventListener('click', function () {
+        closePopup();
+      });
+
+    /**
+     * Key handler
+     * @param {Event} evt - DOM event object
+     */
+    var onKeyPressed = function (evt) {
+      // close popup on Esc key
+      if (evt.keyCode === KeyCode.ESC) {
+        closePopup();
+        document.removeEventListener('keydown', onKeyPressed);
+      }
+    };
+
+    document.addEventListener('keydown', onKeyPressed);
+
     // render popup to the DOM
     mapFiltersContainer.insertAdjacentElement('beforebegin', cardElement);
   };
