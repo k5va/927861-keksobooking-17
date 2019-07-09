@@ -3,13 +3,13 @@
 (function () {
   var MAP_PIN_WIDTH = 50;
   var MAP_PIN_HEIGHT = 70;
+
   var KeyCode = {
     ESC: 27
   };
-
-
   var pinTemplateElement = document.querySelector('#pin').content.querySelector('.map__pin');
   var pinCardTemplateElement = document.querySelector('#card').content.querySelector('.map__card');
+  var cardElement = pinCardTemplateElement.cloneNode(true);
   var mapFiltersContainer = document.querySelector('.map__filters-container');
 
   /**
@@ -95,7 +95,6 @@
    * @param {Object} ad - ad object
    */
   var showDetails = function (ad) {
-    var cardElement = pinCardTemplateElement.cloneNode(true);
     // fill details fields with Ad's data
     Object.keys(adCardFieldMap).forEach(function (field) {
       adCardFieldMap[field](cardElement, ad);
@@ -127,7 +126,6 @@
     };
 
     document.addEventListener('keydown', onKeyPressed);
-
     // render popup to the DOM
     mapFiltersContainer.insertAdjacentElement('beforebegin', cardElement);
   };
