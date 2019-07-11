@@ -7,6 +7,14 @@
   var addNoticeTimeInField = addNoticeForm.querySelector('#timein');
   var addNoticeTimeOutField = addNoticeForm.querySelector('#timeout');
   var addNoticeAddressField = addNoticeForm.querySelector('#address');
+  var addNoticeRoomNumberField = addNoticeForm.querySelector('#room_number');
+  var capacityField = addNoticeForm.querySelector('#capacity');
+  var capacityRoomNumberMap = {
+    0: [100],
+    1: [1, 2, 3],
+    2: [2, 3],
+    3: [3]
+  };
 
   /**
    * Disables Add notice form and fields
@@ -46,24 +54,37 @@
     addNoticePriceField.placeholder = addNoticePriceField.min;
   };
 
-  /**
-   * Add notice form field change event handler
-   * @param {InputEvent} evt - HTML Element input event
-   */
-  var onAddNoticeFormFieldChange = function (evt) {
-    switch (evt.target.id) {
-      case 'type':
-        updateAddNoticeMinPrice(evt.target.value);
-        break;
-      case 'timein':
-        addNoticeTimeOutField.value = evt.target.value;
-        break;
-      case 'timeout':
-        addNoticeTimeInField.value = evt.target.value;
-        break;
+  var fieldChangeHandlerMap = {
+    'type': function (field) {
+      updateAddNoticeMinPrice(field.value);
+    },
+    'timein': function (field) {
+      addNoticeTimeOutField.value = field.value;
+    },
+    'timeout': function (field) {
+      addNoticeTimeInField.value = field.value;
+    },
+    'capacity': function (field) {
+      // TODO: + or parseInt?
+      if (!capacityRoomNumberMap[field.value].includes(+addNoticeRoomNumberField.value)) {
+        field.setCustomValidity('Количество мест не соответствует количеству комнат');
+      } else {
+        field.setCustomValidity('');
+      }
+    },
+    'room_number': function (field) {
+      // in case user changes room_number field to fix capacity error
+      if (capacityRoomNumberMap[capacityField.value].includes(+field.value)) {
+        capacityField.setCustomValidity('');
+      }
     }
   };
-  addNoticeForm.addEventListener('input', onAddNoticeFormFieldChange);
+
+  addNoticeForm.addEventListener('input', function (evt) {
+    if (fieldChangeHandlerMap[evt.target.id]) {
+      fieldChangeHandlerMap[evt.target.id](evt.target);
+    }
+  });
 
   window.noticeForm = {
     enableAddNoticeForm: enableAddNoticeForm,
