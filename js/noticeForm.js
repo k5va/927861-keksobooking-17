@@ -1,14 +1,14 @@
 'use strict';
 
 (function () {
-  var addNoticeForm = document.querySelector('.ad-form');
-  var addNoticeFormFields = addNoticeForm.querySelectorAll('fieldset');
-  var addNoticePriceField = addNoticeForm.querySelector('#price');
-  var addNoticeTimeInField = addNoticeForm.querySelector('#timein');
-  var addNoticeTimeOutField = addNoticeForm.querySelector('#timeout');
-  var addNoticeAddressField = addNoticeForm.querySelector('#address');
-  var addNoticeRoomNumberField = addNoticeForm.querySelector('#room_number');
-  var capacityField = addNoticeForm.querySelector('#capacity');
+  var form = document.querySelector('.ad-form');
+  var formFields = form.querySelectorAll('fieldset');
+  var priceField = form.querySelector('#price');
+  var timeInField = form.querySelector('#timein');
+  var timeOutField = form.querySelector('#timeout');
+  var addressField = form.querySelector('#address');
+  var roomNumberField = form.querySelector('#room_number');
+  var capacityField = form.querySelector('#capacity');
   var capacityRoomNumberMap = {
     0: [100],
     1: [1, 2, 3],
@@ -20,8 +20,8 @@
    * Disables Add notice form and fields
    */
   var disableAddNoticeForm = function () {
-    addNoticeForm.classList.add('ad-form--disabled');
-    addNoticeFormFields.forEach(function (element) {
+    form.classList.add('ad-form--disabled');
+    formFields.forEach(function (element) {
       element.disabled = true;
     });
   };
@@ -30,8 +30,8 @@
    * Enable Add notice form and fields
    */
   var enableAddNoticeForm = function () {
-    addNoticeForm.classList.remove('ad-form--disabled');
-    addNoticeFormFields.forEach(function (element) {
+    form.classList.remove('ad-form--disabled');
+    formFields.forEach(function (element) {
       element.disabled = false;
     });
   };
@@ -42,7 +42,7 @@
    * @param {number} y - y coordinate
    */
   var setNoticeAddress = function (x, y) {
-    addNoticeAddressField.value = Math.floor(x) + ', ' + Math.floor(y);
+    addressField.value = Math.floor(x) + ', ' + Math.floor(y);
   };
 
   /**
@@ -50,8 +50,8 @@
    * @param {string} offerType - given offer type
    */
   var updateAddNoticeMinPrice = function (offerType) {
-    addNoticePriceField.min = window.data.OfferTypes[offerType.toUpperCase()].minPrice;
-    addNoticePriceField.placeholder = addNoticePriceField.min;
+    priceField.min = window.data.OfferTypes[offerType.toUpperCase()].minPrice;
+    priceField.placeholder = priceField.min;
   };
 
   var fieldChangeHandlerMap = {
@@ -59,14 +59,14 @@
       updateAddNoticeMinPrice(field.value);
     },
     'timein': function (field) {
-      addNoticeTimeOutField.value = field.value;
+      timeOutField.value = field.value;
     },
     'timeout': function (field) {
-      addNoticeTimeInField.value = field.value;
+      timeInField.value = field.value;
     },
     'capacity': function (field) {
       // TODO: + or parseInt?
-      if (!capacityRoomNumberMap[field.value].includes(+addNoticeRoomNumberField.value)) {
+      if (!capacityRoomNumberMap[field.value].includes(+roomNumberField.value)) {
         field.setCustomValidity('Количество мест не соответствует количеству комнат');
       } else {
         field.setCustomValidity('');
@@ -80,7 +80,7 @@
     }
   };
 
-  addNoticeForm.addEventListener('input', function (evt) {
+  form.addEventListener('input', function (evt) {
     if (fieldChangeHandlerMap[evt.target.id]) {
       fieldChangeHandlerMap[evt.target.id](evt.target);
     }
