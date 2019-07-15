@@ -14,6 +14,7 @@
    * @param {function} onClose - popup close callback
    */
   var show = function (message, onClose) {
+    onClose = onClose || function () {}; // set default value if no callback is passed
     var errorElement = errorElementTemplate.cloneNode(true);
 
     errorElement.querySelector('.error__message').textContent = message;
