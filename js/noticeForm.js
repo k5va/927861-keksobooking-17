@@ -65,7 +65,6 @@
       timeInField.value = field.value;
     },
     'capacity': function (field) {
-      // TODO: + or parseInt?
       if (!capacityRoomNumberMap[field.value].includes(+roomNumberField.value)) {
         field.setCustomValidity('Количество мест не соответствует количеству комнат');
       } else {
