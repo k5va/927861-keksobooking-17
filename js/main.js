@@ -13,7 +13,15 @@ var activateBookingPage = function () {
         deactivateBookingPage();
       });
     });
-    window.noticeForm.enableAddNoticeForm();
+    window.noticeForm.enableAddNoticeForm(
+        function () { // on form data save success
+          deactivateBookingPage();
+          window.message.success();
+        },
+        function (errorMessage) { // on form data save error
+          window.message.error(errorMessage);
+        }
+    );
     window.filtersForm.enableMapFiltersForm(function (filters) {
       window.map.renderMapPins(filters);
     });

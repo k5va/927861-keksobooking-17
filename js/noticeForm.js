@@ -15,6 +15,8 @@
     2: [2, 3],
     3: [3]
   };
+  var onSaveError;
+  var onSaveSuccess;
 
   /**
    * Disables Add notice form and fields
@@ -28,12 +30,16 @@
 
   /**
    * Enable Add notice form and fields
+   * @param {function} onSuccess - on form data sucessfuly save callback
+   * @param {function} onError - on form data save error callback
    */
-  var enableAddNoticeForm = function () {
+  var enableAddNoticeForm = function (onSuccess, onError) {
     form.classList.remove('ad-form--disabled');
     formFields.forEach(function (element) {
       element.disabled = false;
     });
+    onSaveSuccess = onSuccess || function () {};
+    onSaveError = onError || function () {};
   };
 
   /**
@@ -87,14 +93,7 @@
 
   form.addEventListener('submit', function (evt) {
     evt.preventDefault();
-
-    window.backend.save(
-        new FormData(form),
-        function () { // success handler
-          console.log('Form saved!');
-        },
-        window.message.error // error handler
-    );
+    window.backend.save(new FormData(form), onSaveSuccess, onSaveError);
   });
 
   window.noticeForm = {
