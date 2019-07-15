@@ -4,7 +4,7 @@
 
   var MAX_PIN_NUMBER = 5;
 
-  var MainPinDefalutPosition = {
+  var MainPinDefalutPosition = { // TODO: refactor to Position object
     X: 570,
     Y: 375
   };
