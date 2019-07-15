@@ -9,7 +9,7 @@ var isBookingPageActive = true;
 var activateBookingPage = function () {
   if (!isBookingPageActive) {
     window.map.enableMap(function (errorMessage) {
-      window.errorMessage.show(errorMessage, function () {
+      window.message.error(errorMessage, function () {
         deactivateBookingPage();
       });
     });

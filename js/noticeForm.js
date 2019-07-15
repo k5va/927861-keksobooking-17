@@ -85,6 +85,18 @@
     }
   });
 
+  form.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+
+    window.backend.save(
+        new FormData(form),
+        function () { // success handler
+          console.log('Form saved!');
+        },
+        window.message.error // error handler
+    );
+  });
+
   window.noticeForm = {
     enableAddNoticeForm: enableAddNoticeForm,
     disableAddNoticeForm: disableAddNoticeForm,
