@@ -37,14 +37,13 @@ var deactivateBookingPage = function () {
   if (isBookingPageActive) {
     window.map.disableMap();
     window.noticeForm.disableAddNoticeForm();
+    window.noticeForm.setNoticeAddress(window.map.getMainPinPositionX(), window.map.getMainPinPositionY());
     window.filtersForm.disableMapFiltersForm();
 
     isBookingPageActive = false;
   }
 };
 
-// set add form address field to initial position
-window.noticeForm.setNoticeAddress(window.map.getMainPinPositionX(), window.map.getMainPinPositionY());
 // page should not be active when opened
 deactivateBookingPage();
 // initialize main pin drag and drop feature

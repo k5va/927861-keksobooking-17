@@ -23,6 +23,7 @@
    */
   var disableAddNoticeForm = function () {
     form.classList.add('ad-form--disabled');
+    form.reset();
     formFields.forEach(function (element) {
       element.disabled = true;
     });

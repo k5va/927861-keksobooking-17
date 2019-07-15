@@ -27,6 +27,7 @@
    * Disables Map filters form
    */
   var disableMapFiltersForm = function () {
+    mapFiltersForm.reset();
     mapFiltersFormFields.forEach(function (element) {
       element.disabled = true;
     });

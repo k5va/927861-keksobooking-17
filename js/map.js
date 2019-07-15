@@ -4,6 +4,10 @@
 
   var MAX_PIN_NUMBER = 5;
 
+  var MainPinDefalutPosition = {
+    X: 570,
+    Y: 375
+  };
   var PinLocation = {
     X_MIN: 0,
     X_MAX: 1200,
@@ -91,6 +95,8 @@
    */
   var disableMap = function () {
     ads = null;
+    clearMapPins();
+    moveMainPinToPosition(MainPinDefalutPosition.X, MainPinDefalutPosition.Y);
     mapElement.classList.add('map--faded');
   };
 
