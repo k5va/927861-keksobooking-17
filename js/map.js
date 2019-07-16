@@ -174,6 +174,7 @@
     disableMap: disableMap,
     getMainPinPositionX: getMainPinPositionX,
     getMainPinPositionY: getMainPinPositionY,
-    renderMapPins: renderMapPins
+    renderMapPins: renderMapPins,
+    renderMapPinsDebounced: window.utils.debounce(renderMapPins)
   };
 })();

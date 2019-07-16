@@ -23,7 +23,7 @@ var activateBookingPage = function () {
         }
     );
     window.filtersForm.enableMapFiltersForm(function (filters) {
-      window.map.renderMapPins(filters);
+      window.map.renderMapPinsDebounced(filters);
     });
 
     isBookingPageActive = true;
