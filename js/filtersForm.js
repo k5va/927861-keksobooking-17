@@ -1,19 +1,9 @@
 'use strict';
 
 (function () {
-  var PriceRange = {
-    low: {
-      min: 0,
-      max: 10000
-    },
-    middle: {
-      min: 10000,
-      max: 50000
-    },
-    high: {
-      min: 50000,
-      max: 50000
-    }
+  var PriceRage = {
+    LOW: 10000,
+    MIDDLE: 50000
   };
 
   var mapElement = document.querySelector('.map');
@@ -60,7 +50,16 @@
     // price field filter
     'housing-price': function (price) {
       return function (ad) {
-        return ad.offer.price === price;
+        switch (price) {
+          case 'low':
+            return ad.offer.price < PriceRage.LOW;
+          case 'middle':
+            return ad.offer.price >= PriceRage.LOW && ad.offer.price < PriceRage.MIDDLE;
+          case 'high':
+            return ad.offer.price >= PriceRage.MIDDLE;
+        }
+        // in case of unknown price
+        return false;
       };
     },
     // wifi feature filter
