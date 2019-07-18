@@ -35,13 +35,49 @@
 
   /**
    * Sets textContent of the DOM element defined by the given parent cotainer and selector
-   * @param {HTMLElement} parent - parent container to tun query selectors on
+   * @param {HTMLElement} parent - parent container to run query selectors on
    * @param {*} selector - query selector
    * @param {*} value - value to set
    */
-  var setTextContent = function (parent, selector, value) {
+  var setTextContent = function (parent, selector, value, displayValue) {
     parent = parent || document;
-    parent.querySelector(selector).textContent = value;
+    var element = parent.querySelector(selector);
+
+    if (value) {
+      displayValue = displayValue || value;
+      element.textContent = displayValue;
+    } else { // no value - hide block
+      element.style.display = 'none';
+    }
+  };
+
+  /**
+   * Sets children of the given DOM element based on the given data array
+   * @param {HTMLElement} parent - container to run query selectors on
+   * @param {string} selector - query selector for parent element
+   * @param {Array} data - data array used to create children
+   * @param {function} createChildElement - callback function that creates child element
+   */
+  var setChildContent = function (parent, selector, data, createChildElement) {
+    parent = parent || document;
+
+    var element = parent.querySelector(selector);
+    element.innerHTML = '';
+
+    // hide block if no features
+    if (data.length === 0) {
+      element.style.display = 'none';
+      return;
+    }
+
+    element.style.display = 'block';
+    var dataFragment = document.createDocumentFragment();
+    data.forEach(function (item) {
+      var itemElement = createChildElement(item);
+      dataFragment.appendChild(itemElement);
+    });
+
+    element.appendChild(dataFragment);
   };
 
   var adCardFieldMap = {
@@ -52,54 +88,54 @@
       setTextContent(card, '.popup__text--address', ad.offer.address);
     },
     'popup__text--price': function (card, ad) {
-      setTextContent(card, '.popup__text--price', ad.offer.price + '₽/ночь');
+      setTextContent(card, '.popup__text--price', ad.offer.price, ad.offer.price + '₽/ночь');
     },
     'popup__type': function (card, ad) {
-      setTextContent(card, '.popup__type', window.data.OfferTypes[ad.offer.type.toUpperCase()].name);
+      setTextContent(card, '.popup__type', ad.offer.type, window.data.OfferTypes[ad.offer.type.toUpperCase()].name);
     },
     'popup__text--capacity': function (card, ad) {
-      setTextContent(card, '.popup__text--capacity',
+      setTextContent(card, '.popup__text--capacity', ad.offer.rooms,
           ad.offer.rooms + ' комнаты для ' + ad.offer.guests + ' гостей');
     },
     'popup__text--time': function (card, ad) {
-      setTextContent(card, '.popup__text--time',
+      setTextContent(card, '.popup__text--time', ad.offer.checkin,
           'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout);
     },
     'popup__description': function (card, ad) {
       setTextContent(card, '.popup__description', ad.offer.description);
     },
     'popup__avatar': function (card, ad) {
-      card.querySelector('.popup__avatar').src = ad.author.avatar;
+      var avatar = card.querySelector('.popup__avatar');
+
+      if (ad.author.avatar) {
+        avatar.src = ad.author.avatar;
+      } else {
+        avatar.style.display = 'none';
+      }
     },
     'popup__features': function (card, ad) {
-      var featuresFragment = document.createDocumentFragment();
-      var features = card.querySelector('.popup__features');
+      setChildContent(card, '.popup__features', ad.offer.features,
+          function (feature) { // creates child element
+            var featureElement = document.createElement('li');
+            featureElement.classList.add('popup__feature', 'popup__feature--' + feature);
 
-      ad.offer.features.forEach(function (feature) {
-        var featureItem = document.createElement('li');
-        featureItem.classList.add('popup__feature', 'popup__feature--' + feature);
-        featuresFragment.appendChild(featureItem);
-      });
-
-      features.innerHTML = '';
-      features.appendChild(featuresFragment);
+            return featureElement;
+          }
+      );
     },
     'popup__photos': function (card, ad) {
-      var photosFragment = document.createDocumentFragment();
-      var photos = card.querySelector('.popup__photos');
+      setChildContent(card, '.popup__photos', ad.offer.photos,
+          function (photo) { // creates child element
+            var photoElement = document.createElement('img');
+            photoElement.src = photo;
+            photoElement.classList.add('popup__photo');
+            photoElement.width = 45;
+            photoElement.height = 40;
+            photoElement.alt = 'Фотография жилья';
 
-      ad.offer.photos.forEach(function (photo) {
-        var photoItem = document.createElement('img');
-        photoItem.src = photo;
-        photoItem.classList.add('popup__photo');
-        photoItem.width = 45;
-        photoItem.height = 40;
-        photoItem.alt = 'Фотография жилья';
-        photosFragment.appendChild(photoItem);
-      });
-
-      photos.innerHTML = '';
-      photos.appendChild(photosFragment);
+            return photoElement;
+          }
+      );
     }
   };
 
