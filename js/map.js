@@ -76,7 +76,10 @@
    * @param {Array} data - backend data
    */
   var onAdsDataLoadSuccess = function (data) {
-    ads = data;
+    // filter ads with no offer
+    ads = data.filter(function (ad) {
+      return ad.offer;
+    });
     renderMapPins();
     mapElement.classList.remove('map--faded');
   };
