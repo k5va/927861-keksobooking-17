@@ -36,8 +36,9 @@
   /**
    * Sets textContent of the DOM element defined by the given parent cotainer and selector
    * @param {HTMLElement} parent - parent container to run query selectors on
-   * @param {*} selector - query selector
-   * @param {*} value - value to set
+   * @param {string} selector - query selector
+   * @param {*} value - initial value
+   * @param {string} displayValue - value to set
    */
   var setTextContent = function (parent, selector, value, displayValue) {
     parent = parent || document;
