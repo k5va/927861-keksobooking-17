@@ -15,12 +15,15 @@
     2: [2, 3],
     3: [3]
   };
+  var onSaveError;
+  var onSaveSuccess;
 
   /**
    * Disables Add notice form and fields
    */
   var disableAddNoticeForm = function () {
     form.classList.add('ad-form--disabled');
+    form.reset();
     formFields.forEach(function (element) {
       element.disabled = true;
     });
@@ -28,12 +31,16 @@
 
   /**
    * Enable Add notice form and fields
+   * @param {function} onSuccess - on form data sucessfuly save callback
+   * @param {function} onError - on form data save error callback
    */
-  var enableAddNoticeForm = function () {
+  var enableAddNoticeForm = function (onSuccess, onError) {
     form.classList.remove('ad-form--disabled');
     formFields.forEach(function (element) {
       element.disabled = false;
     });
+    onSaveSuccess = onSuccess || function () {};
+    onSaveError = onError || function () {};
   };
 
   /**
@@ -65,7 +72,6 @@
       timeInField.value = field.value;
     },
     'capacity': function (field) {
-      // TODO: + or parseInt?
       if (!capacityRoomNumberMap[field.value].includes(+roomNumberField.value)) {
         field.setCustomValidity('Количество мест не соответствует количеству комнат');
       } else {
@@ -84,6 +90,11 @@
     if (fieldChangeHandlerMap[evt.target.id]) {
       fieldChangeHandlerMap[evt.target.id](evt.target);
     }
+  });
+
+  form.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    window.backend.save(new FormData(form), onSaveSuccess, onSaveError);
   });
 
   window.noticeForm = {

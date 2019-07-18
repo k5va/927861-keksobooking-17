@@ -4,6 +4,10 @@
 
   var MAX_PIN_NUMBER = 5;
 
+  var MainPinDefalutPosition = { // TODO: refactor to Position object
+    X: 570,
+    Y: 375
+  };
   var PinLocation = {
     X_MIN: 0,
     X_MAX: 1200,
@@ -72,7 +76,10 @@
    * @param {Array} data - backend data
    */
   var onAdsDataLoadSuccess = function (data) {
-    ads = data;
+    // filter ads with no offer
+    ads = data.filter(function (ad) {
+      return ad.offer;
+    });
     renderMapPins();
     mapElement.classList.remove('map--faded');
   };
@@ -91,6 +98,8 @@
    */
   var disableMap = function () {
     ads = null;
+    clearMapPins();
+    moveMainPinToPosition(MainPinDefalutPosition.X, MainPinDefalutPosition.Y);
     mapElement.classList.add('map--faded');
   };
 
@@ -168,6 +177,7 @@
     disableMap: disableMap,
     getMainPinPositionX: getMainPinPositionX,
     getMainPinPositionY: getMainPinPositionY,
-    renderMapPins: renderMapPins
+    renderMapPins: renderMapPins,
+    renderMapPinsDebounced: window.utils.debounce(renderMapPins)
   };
 })();
