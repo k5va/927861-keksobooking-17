@@ -28,6 +28,7 @@
       .forEach(function (pin) {
         mapPinsElement.removeChild(pin);
       });
+    window.pin.hideDetails();
   };
 
   /**

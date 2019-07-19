@@ -161,6 +161,7 @@
    * @param {Object} ad - ad object
    */
   var showDetails = function (ad) {
+    cardElement.style.display = 'block';
     // fill details fields with Ad's data
     Object.keys(adCardFieldMap).forEach(function (field) {
       adCardFieldMap[field](cardElement, ad);
@@ -196,7 +197,15 @@
     mapFiltersContainer.insertAdjacentElement('beforebegin', cardElement);
   };
 
+  /**
+   * Hides details popup
+   */
+  var hideDetails = function () {
+    cardElement.style.display = 'none';
+  };
+
   window.pin = {
-    createPinElement: createPinElement
+    createPinElement: createPinElement,
+    hideDetails: hideDetails
   };
 })();
