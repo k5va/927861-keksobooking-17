@@ -22,9 +22,11 @@ var activateBookingPage = function () {
           window.message.error(errorMessage);
         }
     );
-    window.filtersForm.enableMapFiltersForm(function (filters) {
-      window.map.renderMapPins(filters);
-    });
+    window.filtersForm.enableMapFiltersForm(
+        function (filters) { // on filter change callback
+          window.map.renderMapPins(filters);
+        }
+    );
 
     isBookingPageActive = true;
   }

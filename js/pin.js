@@ -11,6 +11,21 @@
   var pinCardTemplateElement = document.querySelector('#card').content.querySelector('.map__card');
   var cardElement = pinCardTemplateElement.cloneNode(true);
   var mapFiltersContainer = document.querySelector('.map__filters-container');
+  var activePin = null;
+
+  /**
+   * Makes selected pin active
+   * @param {HTMLElement} selectedPin - selected pin DOM element
+   */
+  var updateActivePin = function (selectedPin) {
+    // deactivate previous active pin (if exists)
+    if (activePin) {
+      activePin.classList.remove('map__pin--active');
+    }
+    // make selected pin active
+    selectedPin.classList.add('map__pin--active');
+    activePin = selectedPin;
+  };
 
   /**
    * Creates map pin DOM Element from given template and ad object
@@ -27,7 +42,7 @@
     pinImageElement.alt = ad.offer.type;
 
     pinElement.addEventListener('click', function () {
-      // make prev active pin not active. Make current pin active - change updateActivePin method
+      updateActivePin(pinElement);
       showDetails(ad);
     });
 
