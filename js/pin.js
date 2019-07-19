@@ -27,6 +27,7 @@
     pinImageElement.alt = ad.offer.type;
 
     pinElement.addEventListener('click', function () {
+      // make prev active pin not active. Make current pin active - change updateActivePin method
       showDetails(ad);
     });
 
