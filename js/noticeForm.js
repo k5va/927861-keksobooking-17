@@ -9,6 +9,11 @@
   var addressField = form.querySelector('#address');
   var roomNumberField = form.querySelector('#room_number');
   var capacityField = form.querySelector('#capacity');
+  var avatarFileInput = form.querySelector('.ad-form-header__input');
+  var avatarImage = form.querySelector('.ad-form-header__preview img');
+  var photosFileInput = form.querySelector('.ad-form__input');
+  var photosContainer = form.querySelector('.ad-form__photo-container');
+  var photoTemplate = document.querySelector('#photo').content.querySelector('.ad-form__photo');
   var capacityRoomNumberMap = {
     0: [100],
     1: [1, 2, 3],
@@ -19,6 +24,35 @@
   var onSaveSuccess;
 
   /**
+   * Avatar image loaded callback
+   * @param {Array} readerFiles - Array pf loaded files data
+   */
+  var onAvatarImageLoaded = function (readerFiles) {
+    avatarImage.src = readerFiles[0];
+  };
+
+  /**
+   * Photos loaded callback
+   * @param {Array} readerFiles - Array pf loaded files data
+   */
+  var onPhotosLoaded = function (readerFiles) {
+    // clear previously loaded photos
+    photosContainer.querySelectorAll('.ad-form__photo')
+      .forEach(function (photo) {
+        photosContainer.removeChild(photo);
+      });
+    // add new photos
+    var photosFragment = new DocumentFragment();
+    readerFiles.forEach(function (fileData) {
+      var photo = photoTemplate.cloneNode(true);
+      photo.querySelector('img').src = fileData;
+      photosFragment.appendChild(photo);
+    });
+    photosContainer.appendChild(photosFragment);
+  };
+
+
+  /**
    * Disables Add notice form and fields
    */
   var disableAddNoticeForm = function () {
@@ -27,6 +61,8 @@
     formFields.forEach(function (element) {
       element.disabled = true;
     });
+    window.fileLoader.stopFileLoader(avatarFileInput, onAvatarImageLoaded);
+    window.fileLoader.stopFileLoader(photosFileInput, onPhotosLoaded);
   };
 
   /**
@@ -41,6 +77,9 @@
     });
     onSaveSuccess = onSuccess || function () {};
     onSaveError = onError || function () {};
+
+    window.fileLoader.startFileLoader(avatarFileInput, onAvatarImageLoaded);
+    window.fileLoader.startFileLoader(photosFileInput, onPhotosLoaded);
   };
 
   /**
