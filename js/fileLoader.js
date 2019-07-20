@@ -24,45 +24,59 @@
   };
 
   /**
-   * Start listening to change event on file input DOM object
-   * and fire callback when all files are loaded
-   * @param {HTMLElement} fileInput - file input DOM object
+   * Reads files and fires callback when all files are loaded
+   * @param {FileList} files - list of files to load
    * @param {Function} onfileLoaded - file loaded callback
    */
-  var startFileLoader = function (fileInput, onfileLoaded) {
-
-    fileInput.addEventListener('change', function () {
-      var readerResults = [];
-      // remove not supported file types
-      var supportedFiles = filterSupportedFiles(fileInput.files);
-      // iterate through files
-      supportedFiles.forEach(function (file) {
-        var reader = new FileReader();
-        reader.addEventListener('load', function () {
-          // save file data to array
-          readerResults.push(reader.result);
-          // if all files are loaded fire callback
-          if (readerResults.length === supportedFiles.length) {
-            onfileLoaded(readerResults);
-          }
-        });
-        // read file
-        reader.readAsDataURL(file);
+  var loadFiles = function (files, onfileLoaded) {
+    var readerResults = [];
+    // remove not supported file types
+    var supportedFiles = filterSupportedFiles(files);
+    // iterate through files
+    supportedFiles.forEach(function (file) {
+      var reader = new FileReader();
+      reader.addEventListener('load', function () {
+        // save file data to array
+        readerResults.push(reader.result);
+        // if all files are loaded fire callback
+        if (readerResults.length === supportedFiles.length) {
+          onfileLoaded(readerResults);
+        }
       });
+      // read file
+      reader.readAsDataURL(file);
     });
   };
 
   /**
-   * Stop listening to change event on file input DOM object
+   * Start listening to change event on file input DOM object
+   * and fire callback when all files are loaded
    * @param {HTMLElement} fileInput - file input DOM object
+   * @param {HTMLElement} dropZone - files drop zone
    * @param {Function} onfileLoaded - file loaded callback
    */
-  var stopFileLoader = function (fileInput, onfileLoaded) {
-    fileInput.removeEventListener('change', onfileLoaded);
+  var setupFileLoader = function (fileInput, dropZone, onfileLoaded) {
+    ['dragenter', 'dragover', 'dragleave', 'drop']
+      .forEach(function (eventName) {
+        dropZone.addEventListener(
+            eventName,
+            function (evt) {
+              evt.preventDefault();
+              evt.stopPropagation();
+            },
+            false);
+      });
+
+    dropZone.addEventListener('drop', function (evt) {
+      loadFiles(evt.dataTransfer.files, onfileLoaded);
+    });
+
+    fileInput.addEventListener('change', function () {
+      loadFiles(fileInput.files, onfileLoaded);
+    });
   };
 
   window.fileLoader = {
-    startFileLoader: startFileLoader,
-    stopFileLoader: stopFileLoader
+    setupFileLoader: setupFileLoader
   };
 })();

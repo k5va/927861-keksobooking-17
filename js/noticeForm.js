@@ -10,8 +10,10 @@
   var roomNumberField = form.querySelector('#room_number');
   var capacityField = form.querySelector('#capacity');
   var avatarFileInput = form.querySelector('.ad-form-header__input');
+  var avatarDropZone = form.querySelector('.ad-form-header__drop-zone');
   var avatarImage = form.querySelector('.ad-form-header__preview img');
   var photosFileInput = form.querySelector('.ad-form__input');
+  var photosDropZone = form.querySelector('.ad-form__drop-zone');
   var photosContainer = form.querySelector('.ad-form__photo-container');
   var photoTemplate = document.querySelector('#photo').content.querySelector('.ad-form__photo');
   var capacityRoomNumberMap = {
@@ -61,8 +63,6 @@
     formFields.forEach(function (element) {
       element.disabled = true;
     });
-    window.fileLoader.stopFileLoader(avatarFileInput, onAvatarImageLoaded);
-    window.fileLoader.stopFileLoader(photosFileInput, onPhotosLoaded);
   };
 
   /**
@@ -77,9 +77,6 @@
     });
     onSaveSuccess = onSuccess || function () {};
     onSaveError = onError || function () {};
-
-    window.fileLoader.startFileLoader(avatarFileInput, onAvatarImageLoaded);
-    window.fileLoader.startFileLoader(photosFileInput, onPhotosLoaded);
   };
 
   /**
@@ -135,6 +132,9 @@
     evt.preventDefault();
     window.backend.save(new FormData(form), onSaveSuccess, onSaveError);
   });
+
+  window.fileLoader.setupFileLoader(avatarFileInput, avatarDropZone, onAvatarImageLoaded);
+  window.fileLoader.setupFileLoader(photosFileInput, photosDropZone, onPhotosLoaded);
 
   window.noticeForm = {
     enableAddNoticeForm: enableAddNoticeForm,
