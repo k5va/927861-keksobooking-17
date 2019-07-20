@@ -63,8 +63,7 @@
             function (evt) {
               evt.preventDefault();
               evt.stopPropagation();
-            },
-            false);
+            });
       });
 
     dropZone.addEventListener('drop', function (evt) {
