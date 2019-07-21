@@ -34,15 +34,22 @@
   };
 
   /**
+   * Clears loaded photos
+   */
+  var clearPhotos = function () {
+    photosContainer.querySelectorAll('.ad-form__photo')
+    .forEach(function (photo) {
+      photosContainer.removeChild(photo);
+    });
+  };
+
+  /**
    * Photos loaded callback
    * @param {Array} readerFiles - Array pf loaded files data
    */
   var onPhotosLoaded = function (readerFiles) {
     // clear previously loaded photos
-    photosContainer.querySelectorAll('.ad-form__photo')
-      .forEach(function (photo) {
-        photosContainer.removeChild(photo);
-      });
+    clearPhotos();
     // add new photos
     var photosFragment = new DocumentFragment();
     readerFiles.forEach(function (fileData) {
@@ -131,6 +138,15 @@
   form.addEventListener('submit', function (evt) {
     evt.preventDefault();
     window.backend.save(new FormData(form), onSaveSuccess, onSaveError);
+  });
+
+  form.addEventListener('reset', function () {
+    // clear avatar image
+    avatarImage.src = 'img/muffin-grey.svg';
+    // clear photos
+    clearPhotos();
+    // add empty photo placeholder
+    photosContainer.appendChild(photoTemplate.cloneNode(false));
   });
 
   window.fileLoader.setupFileLoader(avatarFileInput, avatarDropZone, onAvatarImageLoaded);
