@@ -9,6 +9,13 @@
   var addressField = form.querySelector('#address');
   var roomNumberField = form.querySelector('#room_number');
   var capacityField = form.querySelector('#capacity');
+  var avatarFileInput = form.querySelector('.ad-form-header__input');
+  var avatarDropZone = form.querySelector('.ad-form-header__drop-zone');
+  var avatarImage = form.querySelector('.ad-form-header__preview img');
+  var photosFileInput = form.querySelector('.ad-form__input');
+  var photosDropZone = form.querySelector('.ad-form__drop-zone');
+  var photosContainer = form.querySelector('.ad-form__photo-container');
+  var photoTemplate = document.querySelector('#photo').content.querySelector('.ad-form__photo');
   var capacityRoomNumberMap = {
     0: [100],
     1: [1, 2, 3],
@@ -17,6 +24,42 @@
   };
   var onSaveError;
   var onSaveSuccess;
+
+  /**
+   * Avatar image loaded callback
+   * @param {Array} readerFiles - Array pf loaded files data
+   */
+  var onAvatarImageLoaded = function (readerFiles) {
+    avatarImage.src = readerFiles[0];
+  };
+
+  /**
+   * Clears loaded photos
+   */
+  var clearPhotos = function () {
+    photosContainer.querySelectorAll('.ad-form__photo')
+    .forEach(function (photo) {
+      photosContainer.removeChild(photo);
+    });
+  };
+
+  /**
+   * Photos loaded callback
+   * @param {Array} readerFiles - Array pf loaded files data
+   */
+  var onPhotosLoaded = function (readerFiles) {
+    // clear previously loaded photos
+    clearPhotos();
+    // add new photos
+    var photosFragment = new DocumentFragment();
+    readerFiles.forEach(function (fileData) {
+      var photo = photoTemplate.cloneNode(true);
+      photo.querySelector('img').src = fileData;
+      photosFragment.appendChild(photo);
+    });
+    photosContainer.appendChild(photosFragment);
+  };
+
 
   /**
    * Disables Add notice form and fields
@@ -96,6 +139,18 @@
     evt.preventDefault();
     window.backend.save(new FormData(form), onSaveSuccess, onSaveError);
   });
+
+  form.addEventListener('reset', function () {
+    // clear avatar image
+    avatarImage.src = 'img/muffin-grey.svg';
+    // clear photos
+    clearPhotos();
+    // add empty photo placeholder
+    photosContainer.appendChild(photoTemplate.cloneNode(false));
+  });
+
+  window.fileLoader.setupFileLoader(avatarFileInput, avatarDropZone, onAvatarImageLoaded);
+  window.fileLoader.setupFileLoader(photosFileInput, photosDropZone, onPhotosLoaded);
 
   window.noticeForm = {
     enableAddNoticeForm: enableAddNoticeForm,

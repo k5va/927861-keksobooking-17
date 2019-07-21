@@ -11,6 +11,21 @@
   var pinCardTemplateElement = document.querySelector('#card').content.querySelector('.map__card');
   var cardElement = pinCardTemplateElement.cloneNode(true);
   var mapFiltersContainer = document.querySelector('.map__filters-container');
+  var activePin = null;
+
+  /**
+   * Makes selected pin active
+   * @param {HTMLElement} selectedPin - selected pin DOM element
+   */
+  var updateActivePin = function (selectedPin) {
+    // deactivate previous active pin (if exists)
+    if (activePin) {
+      activePin.classList.remove('map__pin--active');
+    }
+    // make selected pin active
+    selectedPin.classList.add('map__pin--active');
+    activePin = selectedPin;
+  };
 
   /**
    * Creates map pin DOM Element from given template and ad object
@@ -27,6 +42,7 @@
     pinImageElement.alt = ad.offer.type;
 
     pinElement.addEventListener('click', function () {
+      updateActivePin(pinElement);
       showDetails(ad);
     });
 
@@ -145,6 +161,7 @@
    * @param {Object} ad - ad object
    */
   var showDetails = function (ad) {
+    cardElement.style.display = 'block';
     // fill details fields with Ad's data
     Object.keys(adCardFieldMap).forEach(function (field) {
       adCardFieldMap[field](cardElement, ad);
@@ -180,7 +197,15 @@
     mapFiltersContainer.insertAdjacentElement('beforebegin', cardElement);
   };
 
+  /**
+   * Hides details popup
+   */
+  var hideDetails = function () {
+    cardElement.style.display = 'none';
+  };
+
   window.pin = {
-    createPinElement: createPinElement
+    createPinElement: createPinElement,
+    hideDetails: hideDetails
   };
 })();

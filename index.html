@@ -175,7 +175,7 @@
           <label class="ad-form__label">Фотографии жилья</label>
           <div class="ad-form__photo-container">
             <div class="ad-form__upload">
-              <input type="file" id="images" name="images" class="ad-form__input visually-hidden">
+              <input type="file" id="images" name="images" multiple class="ad-form__input visually-hidden">
               <label for="images" class="ad-form__drop-zone">Загрузите или&nbsp;перетащите сюда фото</label>
             </div>
             <div class="ad-form__photo"></div>
@@ -250,12 +250,19 @@
     </div>
   </template>
 
+  <template id="photo">
+    <div class="ad-form__photo">
+      <img src="img/muffin-grey.svg" alt="Фотография жилья" width="40" height="44">
+    </div>
+  </template>
+
   <script src="js/utils.js"></script>
   <script src="js/backend.js"></script>
   <script src="js/data.js"></script>
   <script src="js/message.js"></script>
   <script src="js/pin.js"></script>
   <script src="js/map.js"></script>
+  <script src="js/fileLoader.js"></script>
   <script src="js/noticeForm.js"></script>
   <script src="js/filtersForm.js"></script>
   <script src="js/main.js"></script>
