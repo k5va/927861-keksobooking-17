@@ -8,7 +8,7 @@ var isBookingPageActive = true;
  */
 var activateBookingPage = function () {
   if (!isBookingPageActive) {
-    window.map.enableMap(function (errorMessage) {
+    window.map.enable(function (errorMessage) {
       window.message.error(errorMessage, function () {
         deactivateBookingPage();
       });
@@ -25,9 +25,9 @@ var activateBookingPage = function () {
           window.message.error(errorMessage);
         }
     );
-    window.filtersForm.enableMapFiltersForm(
+    window.filtersForm.enable(
         function (filters) { // on filter change callback
-          window.map.renderMapPins(filters);
+          window.map.renderPins(filters);
         }
     );
 
@@ -40,10 +40,10 @@ var activateBookingPage = function () {
  */
 var deactivateBookingPage = function () {
   if (isBookingPageActive) {
-    window.map.disableMap();
+    window.map.disable();
     window.noticeForm.disableAddNoticeForm();
     window.noticeForm.setNoticeAddress(window.map.getMainPinPositionX(), window.map.getMainPinPositionY());
-    window.filtersForm.disableMapFiltersForm();
+    window.filtersForm.disable();
 
     isBookingPageActive = false;
   }

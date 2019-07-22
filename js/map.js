@@ -22,7 +22,7 @@
   /**
    * Removes all map pins from the DOM (except main pin)
    */
-  var clearMapPins = function () {
+  var clearPins = function () {
     mapPinsElement
       .querySelectorAll('.map__pin:not(.map__pin--main)')
       .forEach(function (pin) {
@@ -35,7 +35,7 @@
    * Filters ads data, creates Map pins DOM elements and renders them to the DOM
    * @param {Array} filters - array of selected filters
    */
-  var renderMapPins = function (filters) {
+  var renderPins = function (filters) {
     var filteredAds = ads;
     if (filters) {
       filters.forEach(function (filter) {
@@ -43,11 +43,11 @@
       });
     }
 
-    clearMapPins();
+    clearPins();
     var pinsFragment = document.createDocumentFragment();
 
     filteredAds.slice(0, MAX_PIN_NUMBER).forEach(function (ad) {
-      pinsFragment.appendChild(window.pin.createPinElement(ad));
+      pinsFragment.appendChild(window.pin.create(ad));
     });
 
     mapPinsElement.appendChild(pinsFragment);
@@ -81,7 +81,7 @@
     ads = data.filter(function (ad) {
       return ad.offer;
     });
-    renderMapPins();
+    renderPins();
     mapElement.classList.remove('map--faded');
   };
 
@@ -90,16 +90,16 @@
    * Enables pin map and renders pins, if not rendered before.
    * @param {function} onError - error callback
    */
-  var enableMap = function (onError) {
+  var enable = function (onError) {
     window.backend.load(onAdsDataLoadSuccess, onError);
   };
 
   /**
    * Disables pin map
    */
-  var disableMap = function () {
+  var disable = function () {
     ads = null;
-    clearMapPins();
+    clearPins();
     moveMainPinToPosition(MainPinDefalutPosition.X, MainPinDefalutPosition.Y);
     mapElement.classList.add('map--faded');
   };
@@ -174,10 +174,10 @@
 
   window.map = {
     initMainPinDragAndDrop: initMainPinDragAndDrop,
-    enableMap: enableMap,
-    disableMap: disableMap,
+    enable: enable,
+    disable: disable,
     getMainPinPositionX: getMainPinPositionX,
     getMainPinPositionY: getMainPinPositionY,
-    renderMapPins: window.utils.debounce(renderMapPins)
+    renderPins: window.utils.debounce(renderPins)
   };
 })();

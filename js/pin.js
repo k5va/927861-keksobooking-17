@@ -32,7 +32,7 @@
    * @param {object} ad - ad object containing data
    * @return {Node} pin Element - created pin DOM element
    */
-  var createPinElement = function (ad) {
+  var create = function (ad) {
     var pinElement = pinTemplateElement.cloneNode(true);
     var pinImageElement = pinElement.querySelector('img');
 
@@ -210,7 +210,7 @@
   };
 
   window.pin = {
-    createPinElement: createPinElement,
+    create: create,
     hideDetails: hideDetails
   };
 })();

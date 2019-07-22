@@ -55,7 +55,7 @@
    * @param {HTMLElement} dropZone - files drop zone
    * @param {Function} onfileLoaded - file loaded callback
    */
-  var setupFileLoader = function (fileInput, dropZone, onfileLoaded) {
+  var setup = function (fileInput, dropZone, onfileLoaded) {
     ['dragenter', 'dragover', 'dragleave', 'drop']
       .forEach(function (eventName) {
         dropZone.addEventListener(
@@ -76,6 +76,6 @@
   };
 
   window.fileLoader = {
-    setupFileLoader: setupFileLoader
+    setup: setup
   };
 })();

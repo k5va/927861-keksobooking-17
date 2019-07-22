@@ -156,8 +156,8 @@
     }
   });
 
-  window.fileLoader.setupFileLoader(avatarFileInput, avatarDropZone, onAvatarImageLoaded);
-  window.fileLoader.setupFileLoader(photosFileInput, photosDropZone, onPhotosLoaded);
+  window.fileLoader.setup(avatarFileInput, avatarDropZone, onAvatarImageLoaded);
+  window.fileLoader.setup(photosFileInput, photosDropZone, onPhotosLoaded);
 
   window.noticeForm = {
     enableAddNoticeForm: enableAddNoticeForm,

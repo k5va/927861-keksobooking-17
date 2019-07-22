@@ -75,7 +75,7 @@
   /**
    * Disables Map filters form
    */
-  var disableMapFiltersForm = function () {
+  var disable = function () {
     mapFiltersForm.reset();
     mapFiltersFormFields.forEach(function (element) {
       element.disabled = true;
@@ -86,7 +86,7 @@
    * Enables Map filters form
    * @param {function} onChange - callback on filter change
    */
-  var enableMapFiltersForm = function (onChange) {
+  var enable = function (onChange) {
     mapFiltersFormFields.forEach(function (element) {
       element.disabled = false;
     });
@@ -126,7 +126,7 @@
   });
 
   window.filtersForm = {
-    enableMapFiltersForm: enableMapFiltersForm,
-    disableMapFiltersForm: disableMapFiltersForm
+    enable: enable,
+    disable: disable
   };
 })();
