@@ -172,6 +172,11 @@
      */
     var closePopup = function () {
       cardElement.remove();
+      // clear active pin
+      if (activePin) {
+        activePin.classList.remove('map__pin--active');
+        activePin = null;
+      }
     };
 
     cardElement
