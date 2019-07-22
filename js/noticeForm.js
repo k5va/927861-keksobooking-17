@@ -157,6 +157,9 @@
     clearPhotos();
     // add empty photo placeholder
     photosContainer.appendChild(photoTemplate.cloneNode(false));
+    // reset price field placeholder to default
+    priceField.placeholder = offerMinPriceMap.flat;
+    // fire callback
     if (onReset) {
       onReset();
     }
