@@ -12,6 +12,12 @@
   var cardElement = pinCardTemplateElement.cloneNode(true);
   var mapFiltersContainer = document.querySelector('.map__filters-container');
   var activePin = null;
+  var OfferTypes = {
+    PALACE: 'Дворец',
+    FLAT: 'Квартира',
+    HOUSE: 'Дом',
+    BUNGALO: 'Бунгало'
+  };
 
   /**
    * Makes selected pin active
@@ -108,7 +114,7 @@
       setTextContent(card, '.popup__text--price', ad.offer.price, ad.offer.price + '₽/ночь');
     },
     'popup__type': function (card, ad) {
-      setTextContent(card, '.popup__type', ad.offer.type, window.data.OfferTypes[ad.offer.type.toUpperCase()].name);
+      setTextContent(card, '.popup__type', ad.offer.type, OfferTypes[ad.offer.type.toUpperCase()]);
     },
     'popup__text--capacity': function (card, ad) {
       setTextContent(card, '.popup__text--capacity', ad.offer.rooms,
