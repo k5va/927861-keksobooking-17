@@ -22,6 +22,12 @@
     2: [2, 3],
     3: [3]
   };
+  var offerMinPriceMap = {
+    palace: 10000,
+    flat: 1000,
+    house: 5000,
+    bungalo: 0
+  };
   var onError;
   var onSuccess;
   var onReset;
@@ -104,7 +110,7 @@
    * @param {string} offerType - given offer type
    */
   var updateAddNoticeMinPrice = function (offerType) {
-    priceField.min = window.data.OfferTypes[offerType.toUpperCase()].minPrice;
+    priceField.min = offerMinPriceMap[offerType];
     priceField.placeholder = priceField.min;
   };
 
