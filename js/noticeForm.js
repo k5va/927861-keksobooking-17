@@ -22,8 +22,8 @@
     2: [2, 3],
     3: [3]
   };
-  var onSaveError;
-  var onSaveSuccess;
+  var onError;
+  var onSuccess;
   var onReset;
 
   /**
@@ -84,8 +84,8 @@
     formFields.forEach(function (element) {
       element.disabled = false;
     });
-    onSaveSuccess = onFormSuccess || function () {};
-    onSaveError = onFormError || function () {};
+    onSuccess = onFormSuccess || function () {};
+    onError = onFormError || function () {};
     onReset = onFormReset || function () {};
   };
 
@@ -141,7 +141,7 @@
 
   form.addEventListener('submit', function (evt) {
     evt.preventDefault();
-    window.backend.save(new FormData(form), onSaveSuccess, onSaveError);
+    window.backend.save(new FormData(form), onSuccess, onError);
   });
 
   form.addEventListener('reset', function () {
