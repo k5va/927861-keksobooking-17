@@ -18,6 +18,9 @@ var activateBookingPage = function () {
           deactivateBookingPage();
           window.message.success();
         },
+        function () { // on form reset
+          deactivateBookingPage();
+        },
         function (errorMessage) { // on form data save error
           window.message.error(errorMessage);
         }

@@ -24,6 +24,7 @@
   };
   var onSaveError;
   var onSaveSuccess;
+  var onReset;
 
   /**
    * Avatar image loaded callback
@@ -74,16 +75,18 @@
 
   /**
    * Enable Add notice form and fields
-   * @param {function} onSuccess - on form data sucessfuly save callback
-   * @param {function} onError - on form data save error callback
+   * @param {function} onFormSuccess - on form data sucessfuly save callback
+   * @param {function} onFormReset - on form reset callback
+   * @param {function} onFormError - on form data save error callback
    */
-  var enableAddNoticeForm = function (onSuccess, onError) {
+  var enableAddNoticeForm = function (onFormSuccess, onFormReset, onFormError) {
     form.classList.remove('ad-form--disabled');
     formFields.forEach(function (element) {
       element.disabled = false;
     });
-    onSaveSuccess = onSuccess || function () {};
-    onSaveError = onError || function () {};
+    onSaveSuccess = onFormSuccess || function () {};
+    onSaveError = onFormError || function () {};
+    onReset = onFormReset || function () {};
   };
 
   /**
@@ -93,6 +96,7 @@
    */
   var setNoticeAddress = function (x, y) {
     addressField.value = Math.floor(x) + ', ' + Math.floor(y);
+    addressField.placeholder = addressField.value;
   };
 
   /**
@@ -147,6 +151,9 @@
     clearPhotos();
     // add empty photo placeholder
     photosContainer.appendChild(photoTemplate.cloneNode(false));
+    if (onReset) {
+      onReset();
+    }
   });
 
   window.fileLoader.setupFileLoader(avatarFileInput, avatarDropZone, onAvatarImageLoaded);
