@@ -4,9 +4,6 @@
   var MAP_PIN_WIDTH = 50;
   var MAP_PIN_HEIGHT = 70;
 
-  var KeyCode = {
-    ESC: 27
-  };
   var pinTemplateElement = document.querySelector('#pin').content.querySelector('.map__pin');
   var pinCardTemplateElement = document.querySelector('#card').content.querySelector('.map__card');
   var cardElement = pinCardTemplateElement.cloneNode(true);
@@ -197,7 +194,7 @@
      */
     var onKeyPressed = function (evt) {
       // close popup on Esc key
-      if (evt.keyCode === KeyCode.ESC) {
+      if (evt.keyCode === window.utils.KeyCodes.ESC) {
         closePopup();
         document.removeEventListener('keydown', onKeyPressed);
       }

@@ -1,10 +1,6 @@
 'use strict';
 
 (function () {
-  var KeyCodes = {
-    ESC: 27
-  };
-
   var mainElement = document.querySelector('main');
   var errorElementTemplate = document.querySelector('#error').content.querySelector('.error');
   var successElementTemplate = document.querySelector('#success').content.querySelector('.success');
@@ -49,7 +45,7 @@
      * @param {Event} evt - DOM event object
      */
     var onKey = function (evt) {
-      if (evt.keyCode === KeyCodes.ESC) {
+      if (evt.keyCode === window.utils.KeyCodes.ESC) {
         close();
       }
     };

@@ -2,6 +2,9 @@
 
 (function () {
   var DEBOUNCE_INTERVAL = 500; // ms
+  var KeyCodes = {
+    ESC: 27
+  };
 
   /**
    * Debounces given function - returns new function, that calls callback only after DEBOUNCE_INTERVAL is passed
@@ -25,6 +28,7 @@
   };
 
   window.utils = {
-    debounce: debounce
+    debounce: debounce,
+    KeyCodes: KeyCodes
   };
 })();
